@@ -5,7 +5,7 @@ else
     $apiKey="6ae1ec5dc17bac9e6b1f29b528c6c5dd9c46f50279c94f7cfe1a45f41e04cdd4";
 
 if(!$sourcefile){
-   $sourcefile =$_POST['source_file']; 
+   $source_file =$_POST['source_file']; 
    $target_dir = "../data/";
    $target_file = $target_dir . basename($_FILES["source_file"]["name"]);
 }

@@ -1,7 +1,12 @@
 <?php
 // configurtion infomation based on your cedar account
 include("config.inc");
-
+if (move_uploaded_file($_FILES["source_file"]["tmp_name"], $target_file)) {
+  echo "The file ". htmlspecialchars( basename( $_FILES["source_file"]["name"])). " has been uploaded.";
+} else {
+  echo "Sorry, there was an error uploading your file.";
+}
+echo "Target Dir: ".$target_file;
 //read csv and concvert it to array
 function readCsv($filename='', $delimiter=',')
 {
@@ -24,14 +29,6 @@ function readCsv($filename='', $delimiter=',')
     }
     return $data;
 }
-
-//File upload 
-if (!file_exists($target_file)) 
-  move_uploaded_file($_FILES["source_file"]["tmp_name"], $target_file);
-   //echo "The file ". htmlspecialchars( basename( $_FILES["source_file"]["name"])). " has been uploaded.";
- else 
-  echo "Sorry, there was an error uploading your file.";
-
 
 //Field names and values
 function getFieldValues($data) {
@@ -64,9 +61,21 @@ foreach($inputData as $data ) {
   $field_properties=$_POST["field_properties"];
   $isBasedOn=$_POST["isBasedOn"];
   $description='"'.$_POST["description"].'"';
-  $template_id='"https://repo.metadatacenter.org/templates/'.$_POST["template_id"].'"';
-  $user_id='"https://metadatacenter.org/users/'.$_POST["user_id"].'"';
-
+  $user_id=$_POST["user_id"];
+  $template_id=$_POST["user_id"];
+  $user_id="https://metadatacenter.org/users/".$user_id;
+  echo "<br/> user_id".$user_id;
+  exit(1);
+  /* echo "field_properties<br>"; 
+  echo $field_properties;
+  echo "isBasedOn<br>"; 
+  echo $isBasedOn;
+  echo "description<br>"; 
+  echo $description;
+  echo "createdBy<br>"; 
+  echo $createdBy;
+  echo "modifiedBy<br>"; 
+  echo $modifiedBy;*/
   $input = '{
    "@context": {
       "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -107,11 +116,11 @@ foreach($inputData as $data ) {
       },
       '.$field_properties.'
       },'.$data_values[1].'
-      "schema:isBasedOn": '.$template_id.',
+      "schema:isBasedOn": '.$isBasedOn.',
       "schema:name": '.$instance_name.',
       "schema:description": '.$description.',
       "pav:createdBy": '.$user_id.',
-      "oslc:modifiedBy": '.$user_id.'
+      "oslc:modifiedBy": '.$user_id.' 
     }';
 
 if($secureurl)
@@ -143,6 +152,7 @@ if(!$headers){
 
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_POST, 1);
+echo "<br/> <br/>".$input;
 curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);              
 $uploaded = curl_exec($curl);

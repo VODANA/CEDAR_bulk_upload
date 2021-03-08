@@ -1,12 +1,8 @@
 <?php
 // configurtion infomation based on your cedar account
 include("config.inc");
-if (move_uploaded_file($_FILES["source_file"]["tmp_name"], $target_file)) {
-  echo "The file ". htmlspecialchars( basename( $_FILES["source_file"]["name"])). " has been uploaded.";
-} else {
-  echo "Sorry, there was an error uploading your file.";
-}
-echo "Target Dir: ".$target_file;
+
+//exit(1);
 //read csv and concvert it to array
 function readCsv($filename='', $delimiter=',')
 {
@@ -30,6 +26,14 @@ function readCsv($filename='', $delimiter=',')
     return $data;
 }
 
+//File upload 
+ if (!file_exists($target_file)) 
+  move_uploaded_file($_FILES["source_file"]["tmp_name"], $target_file);
+ else {
+  echo "File already exists in the server try uploading a new file or rename the file if it has new content!";
+  exit(1);
+ }
+
 //Field names and values
 function getFieldValues($data) {
 
@@ -37,8 +41,14 @@ function getFieldValues($data) {
 
   foreach($data as $key => $value ) {
     $field_name='"'.$key.'"';
-    $field_value='"'.$value.'"';
-    $data_values=$data_values.$field_name.': {"@value": '.$field_value.'} , ';
+    if(!is_numeric($value)){
+        $field_value='"'.$value.'"';
+        $data_values=$data_values.$field_name.': {"@value": '.$field_value.'} ,';
+    } else {
+        $field_value='"'.$value.'"';
+        $data_values=$data_values.$field_name.': {"@value": '.$field_value.', "@type": "xsd:decimal" } , '; 
+    }
+
     if(!$schema_name)
        $schema_name=$value;
     }
@@ -54,28 +64,17 @@ foreach($inputData as $data ) {
   $data_values=getFieldValues($data);
 
   if($data_values[0])
-      $instance_name='"Tigrai Covid '.$data_values[0].'"';
+      $instance_name='"'.$_POST["description"].' '.$data_values[0].'"';
   else
-      $instance_name="Tigrai Covid";
+      $instance_name='"'.$_POST["description"].'"';
 
   $field_properties=$_POST["field_properties"];
   $isBasedOn=$_POST["isBasedOn"];
   $description='"'.$_POST["description"].'"';
-  $user_id=$_POST["user_id"];
-  $template_id=$_POST["user_id"];
-  $user_id="https://metadatacenter.org/users/".$user_id;
-  echo "<br/> user_id".$user_id;
-  exit(1);
-  /* echo "field_properties<br>"; 
-  echo $field_properties;
-  echo "isBasedOn<br>"; 
-  echo $isBasedOn;
-  echo "description<br>"; 
-  echo $description;
-  echo "createdBy<br>"; 
-  echo $createdBy;
-  echo "modifiedBy<br>"; 
-  echo $modifiedBy;*/
+  $template_id='"https://repo.metadatacenter.org/templates/'.$_POST["template_id"].'"';
+  $user_id='"https://metadatacenter.org/users/'.$_POST["user_id"].'"';
+
+  //JSON-LD Based on template-instance
   $input = '{
    "@context": {
       "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
@@ -116,53 +115,34 @@ foreach($inputData as $data ) {
       },
       '.$field_properties.'
       },'.$data_values[1].'
-      "schema:isBasedOn": '.$isBasedOn.',
+      "schema:isBasedOn": '.$template_id.',
       "schema:name": '.$instance_name.',
       "schema:description": '.$description.',
       "pav:createdBy": '.$user_id.',
-      "oslc:modifiedBy": '.$user_id.' 
+      "oslc:modifiedBy": '.$user_id.'
     }';
+    
+    //URL Based on folder id
+    $secureurl ="https://resource.metadatacenter.org/template-instances?folder_id=https%3A%2F%2Frepo.metadatacenter.org%2Ffolders%2F".$folder_id."";
 
-if($secureurl)
-  $secureurl ="https://resource.metadatacenter.org/template-instances?folder_id=".$folder_id."";
-else
-  $secureurl ="https://resource.metadatacenter.org/template-instances?folder_id=https%3A%2F%2Frepo.metadatacenter.org%2Ffolders%2F7a1773fd-d187-46b8-aebf-c7b6955a44f5";
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $secureurl);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Accept: application/json',
+            'Authorization: apiKey '.$apiKey,
+          ));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POST, 1);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
+    $uploaded = curl_exec($curl);
 
-$curl = curl_init();
-curl_setopt($curl, CURLOPT_URL, $secureurl);
-curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-      'APIKEY: '.$apiKey,
-      'Content-Type: application/json',
-   ));
+    curl_close($curl);
 
-if(!$headers){
-  curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'Accept: application/json',
-        'Authorization: apiKey '.$apiKey,
-      ));
-  }else{
-      curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        'Content-Type: application/json',
-        'Accept: application/json',
-        'Authorization: apiKey '.$apiKey,
-        $headers
-      ));
   }
-
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_POST, 1);
-echo "<br/> <br/>".$input;
-curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
-curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);              
-$uploaded = curl_exec($curl);
-
-curl_close($curl);
-
-}
-
-if($uploaded)
-    echo "<center><br/>Successfully uploaded ".count($inputData)." records to CEDAR!</center>";
+  
+  if($uploaded)
+      echo "<center><br/>Successfully uploaded ".count($inputData)." records to CEDAR!</center>";
 ?>
 
 

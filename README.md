@@ -17,7 +17,7 @@ This is laravel based project that creates templates on CEDAR and uploads comma 
 
 ## License
 
-CEDER Bulk Input systemm is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+CEDER Bulk Input system is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
 ## Contact

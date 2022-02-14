@@ -19,6 +19,7 @@ class CreateBulkuploadsTable extends Migration
             $table->string('file_path')->nullable();
             $table->string('instance_path')->nullable();
             $table->string('vocabulary_url')->nullable();
+            $table->string('folder_id')->nullable();
             $table->timestamps();
         });
     }

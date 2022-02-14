@@ -21,11 +21,11 @@ class UserSeeder extends Seeder
         $this->createUser('user', 'user');
     }
 
-    public function createUser($username, $role, $password = 'password')
+    public function createUser($username, $role, $password = 'letmein')
     {
         $user = User::create([
             'name' => Str::title($username),
-            'email' => $username . '@admin.com',
+            'email' => $username . '@vodana.com',
             'password' => bcrypt("$password"),
         ]);
 

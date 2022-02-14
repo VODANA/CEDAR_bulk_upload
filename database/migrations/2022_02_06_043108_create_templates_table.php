@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToBulkuploads extends Migration
+class CreateTemplatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class AddColumnToBulkuploads extends Migration
      */
     public function up()
     {
-        Schema::table('bulk_uploads', function (Blueprint $table) {
+        Schema::create('templates', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->string('file_path')->nullable();
             $table->string('folder_id')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ class AddColumnToBulkuploads extends Migration
      */
     public function down()
     {
-        Schema::table('bulk_uploads', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('templates');
     }
 }

@@ -1,7 +1,27 @@
-# CEDAR_bulk_upload
-This is a php script developed to upload bulk input data to CEDAR Template. It is a work in
-progress as part of the VODAN Africa and Asia. It is planned to be a free and open source software,
-hence anyone interested is highly encouraged to contribute. 
+## CEDAR Utilities 
 
-Follow the user guide to be able to use the system.
-https://github.com/VODANA/CEDAR_bulk_upload/blob/main/User_Guide.pdf
+This project is lavavel based project that creates template and bulk upload data
+to a CEDAR system deployed locally or to metadatacenter. 
+
+<br>Features include:
+
+- Template Crud
+- Bulk upload data 
+- Spatie Laravel Permission
+- Role and Permission Seeder
+- Admin file structure
+- Role Crud (Web and Api)
+- Permission Crud (Web and Api)
+- User Crud (Web and Api)
+- Setting Crud (Web and Api - Frontend and Backend)
+- Permission Assigning to Role
+
+## License
+
+The Laravel Get Started Project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Contact
+
+<a href="mailto:samson.yohannes@mu.edu.et">Samson Yohannes Amare</a># vodana
+<a href="mailto:getu.tadele@mu.edu.et">Getu Tadele Taye</a># vodana

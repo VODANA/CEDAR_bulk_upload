@@ -1,7 +1,6 @@
 ## CEDAR Utilities 
 
-This project is lavavel based project that creates template and bulk upload data
-to a CEDAR system deployed locally or to metadatacenter. 
+This is laravel based project that creates templates on CEDAR and uploads comma separated bulk data to a CEDAR system deployed locally or to CEDAR system at metadatacenter. 
 
 <br>Features include:
 
@@ -18,7 +17,7 @@ to a CEDAR system deployed locally or to metadatacenter.
 
 ## License
 
-The Laravel Get Started Project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+CEDER Bulk Input systemm is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
 ## Contact

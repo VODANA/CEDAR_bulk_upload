@@ -34,12 +34,10 @@ class BulkUpload extends Model
         return $inputData;
     }
 
-    public function bulkUpload($source_file , $secureurl , $apiKey , $templateJson){
+    public function bulkUpload($source_file , $secureurl , $apiKey , $vocabularyUrl, $templateJson){
         $inputData=$this->readCSVFile($source_file);
-       // delete $templateJson["@id"];
         $templateArray = json_decode($templateJson, true);
         unset($templateArray["@id"]);
-
         foreach($inputData as $data ) {
             foreach($data as $field => $value ) {
                 if(in_array('@value',$templateArray[$field])){
@@ -48,9 +46,9 @@ class BulkUpload extends Model
                     $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
                     $templateArray[$field]['rdfs:label']=$value;
                 }
-                //$templateArray['schema:name']=$data['PatientID'];
-                //$templateArray['schema:description']=$_POST["field_properties"];
             }
+            //$templateArray['schema:name']= $templateArray['schema:name'];
+            //$templateArray['schema:description']=$_POST["field_properties"];
 
             $input = json_encode($templateArray);  
 
@@ -75,7 +73,6 @@ class BulkUpload extends Model
         //curl_setopt($curl, CURLOPT_PROXY, $proxy[0]);
         //curl_setopt($curl, CURLOPT_PROXYPORT, $proxy[1]);
         $uploaded = curl_exec($curl);
-
         curl_close($curl);
         ///return $uploaded;
     }

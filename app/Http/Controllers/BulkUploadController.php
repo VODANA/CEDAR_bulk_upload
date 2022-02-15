@@ -55,7 +55,7 @@ class BulkUploadController extends Controller
             //Read template instance
             $templateJson = file_get_contents(base_path($bulkInput->instance_path));
 
-            $bulkInput->bulkUpload($bulkInput->file_path , $secureurl , $setting->api_token , $templateJson);
+            $bulkInput->bulkUpload($bulkInput->file_path , $secureurl , $setting->api_token ,$bulkInput->vocabulary_url, $templateJson);
             return redirect()->route('bulkuploads.index')->with($notification);
 
         } catch (Exception $e) {

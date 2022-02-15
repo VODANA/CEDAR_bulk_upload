@@ -36,25 +36,26 @@ class BulkUpload extends Model
 
     public function bulkUpload($source_file , $secureurl , $apiKey , $vocabularyUrl, $templateJson){
         $inputData=$this->readCSVFile($source_file);
-        $templateArray = json_decode($templateJson, true);
-        unset($templateArray["@id"]);
-        foreach($inputData as $data ) {
-            foreach($data as $field => $value ) {
-                if(in_array('@value',$templateArray[$field])){
-                    $templateArray[$field]['@value']=$value;         
-                } elseif(in_array('@id',$templateArray[$field])){
-                    $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
-                    $templateArray[$field]['rdfs:label']=$value;
-                }
-            }
-            //$templateArray['schema:name']= $templateArray['schema:name'];
-            //$templateArray['schema:description']=$_POST["field_properties"];
-
-            $input = json_encode($templateArray);  
-
+        // delete $templateJson["@id"];
+         $templateArray = json_decode($templateJson, true);
+         unset($templateArray["@id"]);
+         foreach($inputData as $data ) {
+             foreach($data as $field => $value ) {
+                 if(in_array('@value',$templateArray[$field])){
+                     $templateArray[$field]['@value']=$value;         
+                 } elseif(in_array('@id',$templateArray[$field])){
+                     $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
+                     $templateArray[$field]['rdfs:label']=$value;
+                 }
+                 //$templateArray['schema:name']=$data['PatientID'];
+                 //$templateArray['schema:description']=$_POST["field_properties"];
+             }
+ 
+             $input = json_encode($templateArray);  
+             
             $this->postData($secureurl , $apiKey , $input);
-       // return $input;
-        }
+        // return $input;
+         }
     }
 
     public function postData($secureurl , $apiKey , $input){
@@ -73,7 +74,8 @@ class BulkUpload extends Model
         //curl_setopt($curl, CURLOPT_PROXY, $proxy[0]);
         //curl_setopt($curl, CURLOPT_PROXYPORT, $proxy[1]);
         $uploaded = curl_exec($curl);
+      //  dd($uploaded);
         curl_close($curl);
-        ///return $uploaded;
+      return $uploaded;
     }
 }

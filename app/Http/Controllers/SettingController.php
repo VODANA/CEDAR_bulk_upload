@@ -28,16 +28,20 @@ class SettingController extends Controller
 
     public function store(SettingRequest $request)
     {
-            try{
-
-            $setting = Setting::create($request->all());
+        try{
+            $setting = new Setting;
+            $setting->site_name=$request->site_name;
+            $setting->url=$request->url;
+            $setting->api_token=$request->api_token;
+            $setting->folder_id=$request->folder_id;
+            $setting->location=$request->location;
             $setting->user_id=auth()->id();
-            $setting->save();
+            $setting->save();   
 
             $notification = array(
                 'message' => 'Setting saved successfully!',
                 'alert-type' => 'success'
-            );
+            );  
 
             return redirect()->route('settings.index')->with($notification);
 

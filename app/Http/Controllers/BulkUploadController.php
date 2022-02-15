@@ -43,7 +43,6 @@ class BulkUploadController extends Controller
             $bulkInput->vocabulary_url= $request->vocabulary_url;
             $bulkInput->folder_id= $request->folder_id;
             $bulkInput->save();
-
             $notification = array(
                 'message' => 'Bulk data uploaded successfully!',
                 'alert-type' => 'success'
@@ -54,7 +53,6 @@ class BulkUploadController extends Controller
             $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$bulkInput->folder_id; //Folder Id
             //Read template instance
             $templateJson = file_get_contents(base_path($bulkInput->instance_path));
-
             $bulkInput->bulkUpload($bulkInput->file_path , $secureurl , $setting->api_token ,$bulkInput->vocabulary_url, $templateJson);
             return redirect()->route('bulkuploads.index')->with($notification);
 

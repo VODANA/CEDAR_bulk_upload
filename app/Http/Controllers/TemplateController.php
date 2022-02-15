@@ -49,10 +49,12 @@ class TemplateController extends Controller
 
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
+
             $secureurl ="https://resource.".$setting->url."/templates?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$template->folder_id; //Folder Id
             $templateJson = file_get_contents(base_path($template->file_path));
-  
-            $template->createTemplate($secureurl,$setting->api_token,$templateJson);
+            $templateArray = json_decode($templateJson, true);
+            unset($templateArray["@id"]);
+            $template->createTemplate($secureurl,$setting->api_token,json_encode($templateArray));
 
             return redirect()->route('templates.index')->with($notification);
 

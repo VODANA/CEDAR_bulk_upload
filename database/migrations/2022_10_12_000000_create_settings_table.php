@@ -15,6 +15,7 @@ class CreateSettingsTable extends Migration
             $table->string('api_token')->unique();
             $table->string('folder_id')->nullable();
             $table->string('location');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

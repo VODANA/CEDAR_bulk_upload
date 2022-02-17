@@ -1,0 +1,26 @@
+//Clone the repo
+git clone https://github.com/VODANA/CEDAR_bulk_upload.git
+
+//Edit your .env and set the database host, username and password
+
+//Migrate the database
+php artisan migrate
+
+//Seed the data 
+php artisan db:seed
+
+//start server
+php artisan serve
+
+The defalt user 
+Username: admin@vodana.com
+Password: letmein
+
+//Edit the setting
+URL, API_Key and the likes
+
+//Create Template
+Copy the template JSON from CEDAR remote and save it as filename.json and create the template
+
+//Bulk Upload
+Create an instance with all variables filled out and save it as instancename.json

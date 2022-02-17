@@ -41,12 +41,12 @@ class BulkUpload extends Model
          unset($templateArray["@id"]);
          foreach($inputData as $data ) {
              foreach($data as $field => $value ) {
-                 if(in_array('@value',$templateArray[$field])){
-                     $templateArray[$field]['@value']=$value;         
-                 } elseif(in_array('@id',$templateArray[$field])){
-                     $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
-                     $templateArray[$field]['rdfs:label']=$value;
-                 }
+                if(array_key_exists('@value', $templateArray[$field])){
+                    $templateArray[$field]['@value']=$value;         
+                } elseif(array_key_exists('@id', $templateArray[$field])){
+                    $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
+                    $templateArray[$field]['rdfs:label']=$value;
+                }
                  //$templateArray['schema:name']=$data['PatientID'];
                  //$templateArray['schema:description']=$_POST["field_properties"];
              }

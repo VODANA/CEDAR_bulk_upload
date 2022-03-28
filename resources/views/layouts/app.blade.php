@@ -33,17 +33,41 @@
                     Home
                 </a> -->
                 <a class="navbar-brand" href="{{ url('/templates') }}">
-                    Create Template              
+                    [ Create Template ]              
                 </a>
                 <a class="navbar-brand" href="{{ url('/bulkuploads') }}">
-                    Bulk Upload              
+                    [ Bulk Upload ]             
+                </a>
+                <a class="navbar-brand" href="{{ url('/allegrosyncs') }}">
+                    [ Upload to Allegro ]             
+                </a>
+                <a class="navbar-brand" href="{{ url('/synctoallegros') }}">
+                    [ Sync CEDAR to Allegro ]              
+                </a>
+                <div aria-labelledby="navbarDropdown">
+                <a class="navbar-brand" href="{{ url('/synctoallegros/create') }}">
+                    [ Sync RDF ]              
+                </a>
+                <a class="navbar-brand" href="{{ url('/backups/create') }}">
+                    [ Create Backup ]              
+                </a>
+                <a class="navbar-brand" href="{{ url('/backups/') }}">
+                    [ Restore Backup ]              
+                </a>
+                <a class="navbar-brand" href="{{ url('/dhissyncs/create') }}">
+                    [ Sync To DHIS2 ]              
+                </a>
+                </div>
+  
+                <div aria-labelledby="navbarDropdown">
+
+                <a class="navbar-brand" href="{{ url('/admin/roles') }}">
+                    [ Admin ]             
                 </a>
                 <a class="navbar-brand" href="{{ url('/settings') }}">
-                    Setting             
+                    [ Setting ]            
                 </a>
-                <a class="navbar-brand" href="{{ url('/admin/roles') }}">
-                    Admin              
-                </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -93,10 +117,31 @@
             </div>
         </nav>
 
-        <main class="py-4" width="95%">
-            @yield('content')
+     <!--   <div class="col-md-1">
+                                <a class="dropdown-item" href="{{ route('admin.permissions.index') }}">
+                                    {{ __('Permissions') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.roles.index') }}">
+                                    {{ __('Roles') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                                    {{ __('Users') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('templates.index') }}">
+                                    {{ __('Templates') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('bulkuploads.index') }}">
+                                    {{ __('Bulk Input') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('settings.index') }}">
+                                    {{ __('Settings') }}
+                                </a>
+                            </div>
+           
+    </div> -->
+    <main class="py-4" width="90%">
+  @yield('content')
         </main>
-    </div>
 
     <script src="{{ asset('js/script.js') }}"></script>
     @stack('scripts')

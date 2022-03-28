@@ -29,6 +29,8 @@ class BulkUploadController extends Controller
     public function store(BulkUploadRequest $request)
     {
         $request->validate(['file_path' => 'required|mimes:csv,txt,xlx,xls,pdf,json|max:2048']);
+        
+        //dd($request->all());
 
         $bulkInput = new BulkUpload;
 
@@ -40,21 +42,30 @@ class BulkUploadController extends Controller
             $tmpl_instance_path = $request->file('instance_path')->storeAs ('uploads', $tmpl_instance, 'public');
             $bulkInput->file_path = 'storage/app/public/'. $filePath;
             $bulkInput->instance_path = 'storage/app/public/'. $tmpl_instance_path;
-            $bulkInput->vocabulary_url= $request->vocabulary_url;
+           // $bulkInput->vocabulary_url= $request->vocabulary_url;
             $bulkInput->folder_id= $request->folder_id;
             $bulkInput->save();
-            $notification = array(
-                'message' => 'Bulk data uploaded successfully!',
-                'alert-type' => 'success'
-            );
-         
+                     
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
             $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$bulkInput->folder_id; //Folder Id
             //Read template instance
+           //dd($bulkInput->instance_path);
             $templateJson = file_get_contents(base_path($bulkInput->instance_path));
-            $bulkInput->bulkUpload($bulkInput->file_path , $secureurl , $setting->api_token ,$bulkInput->vocabulary_url, $templateJson);
-            return redirect()->route('bulkuploads.index')->with($notification);
+            $status=$bulkInput->bulkUpload($bulkInput->file_path , $secureurl , $setting->api_token , $templateJson);
+            if($status) {
+                $notification = array(
+                    'message' => 'Bulk data uploaded successfully!',
+                    'alert-type' => 'success'
+                );       
+                return redirect()->route('bulkuploads.index')->with($notification);
+            } else {
+                $notification = array(
+                    'message' => 'Bulk data uploaded has failed. Check your template instance and the dataset in CSV!',
+                    'alert-type' => 'error'
+                );  
+                return redirect()->route('bulkuploads.index')->with($notification);
+            }
 
         } catch (Exception $e) {
             $notification = array(

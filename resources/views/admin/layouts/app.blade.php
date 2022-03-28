@@ -41,6 +41,26 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('admin.permissions.index') }}">
+                                    {{ __('Permissions') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.roles.index') }}">
+                                    {{ __('Roles') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('admin.users.index') }}">
+                                    {{ __('Users') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('templates.index') }}">
+                                    {{ __('Templates') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('bulkuploads.index') }}">
+                                    {{ __('Bulk Input') }}
+                                </a>
+                                <a class="dropdown-item" href="{{ route('settings.index') }}">
+                                    {{ __('Settings') }}
+                                </a>
+                            </div>
                     <ul class="navbar-nav mr-auto">
 
                     </ul>

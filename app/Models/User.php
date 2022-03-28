@@ -12,6 +12,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+  //  protected $connection = 'mongodb';
+//	protected $collection = 'user';
+
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**

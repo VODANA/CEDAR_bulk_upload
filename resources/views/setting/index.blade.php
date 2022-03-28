@@ -16,7 +16,7 @@
 
                     <p><a class="btn btn-success" href='{{ route("settings.create") }}'><i class="fa fa-plus"></i> Create setting</a></p>
 
-                    <table class="table table-bordered">
+                    <table class="col-md-14 table-bordered">
                         <thead>
                             <tr>
                                 <th>
@@ -43,7 +43,7 @@
                         <tbody>
                             @forelse($settings as $setting)
                             <tr>
-                            <td>
+                                <td>
                                     {{ $setting->site_name ?? 'N/A' }}
                                 </td>
                                 <td>

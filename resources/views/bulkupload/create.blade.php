@@ -24,12 +24,12 @@
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
-                        <div class="form-group">
+                       <!-- <div class="form-group">
                             <input class="form-control" type="text" name="vocabulary_url" placeholder="Vocabulary URL">
                             @error('vocabulary_url')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <input class="form-control" type="text" name="folder_id" placeholder="folder_id">
                             @error('folder_id')

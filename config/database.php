@@ -15,7 +15,9 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+   // 'default' => env('DB_CONNECTION', 'mysql'),
+      'default' => env('DB_CONNECTION', 'mongodb'),
+
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +36,12 @@ return [
     */
 
     'connections' => [
-
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => 'mongodb://127.0.0.1:27017/admin?retryWrites=true&w=majority',
+            //'dsn' => 'mongodb+srv://127.0.0.1:27017/vodan', // --username <username> # MongoDB Atlas
+            'database' => 'cedar',
+        ],
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DATABASE_URL'),

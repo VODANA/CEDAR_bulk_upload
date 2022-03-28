@@ -31,6 +31,6 @@ class CreateBulkuploadsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('templates');
+        Schema::dropIfExists('bulk_uploads');
     }
 }

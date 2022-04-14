@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,8 @@
                     </div>
                     @endif
 
-                    <p><a class="btn btn-success" href='{{ route("admin.roles.create") }}'><i class="fa fa-plus"></i> Create Role</a></p>
+                    <p><a class="btn btn-success" href='{{ route("admin.roles.create") }}'><i class="fa fa-plus"></i>
+                            Create Role</a></p>
 
                     <table class="table table-bordered">
                         <thead>
@@ -42,7 +43,8 @@
 
                                 <td>
                                     @foreach($role->permissions as $perm)
-                                    <span class="badge badge-info mb-1 p-1 text-white" style="font-size: 12px;">{{$perm->name}}</span>
+                                    <span class="badge badge-info mb-1 p-1 text-white"
+                                        style="font-size: 12px;">{{$perm->name}}</span>
                                     @endforeach
                                 </td>
 
@@ -51,7 +53,9 @@
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-success d-block mb-2" href='{{ route("admin.roles.edit", $role->id) }}'><i class="fa fa-pencil"></i> Edit</a>
+                                    <a class="btn btn-success d-block mb-2"
+                                        href='{{ route("admin.roles.edit", $role->id) }}'><i class="fa fa-pencil"></i>
+                                        Edit</a>
 
                                     <form method="POST" action='{{ route("admin.roles.destroy", $role->id) }}'>
                                         {{ csrf_field() }}

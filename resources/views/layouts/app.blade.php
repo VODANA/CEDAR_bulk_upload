@@ -56,33 +56,57 @@
 
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
+                    {{--<div class="image">
                         <img src="{{ asset('Getu_.jpg') }}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block"></a>
+                    </div>--}}
+                    <div class="info" style="margin-left:50px">
+                        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-4">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ url('#') }}" class="nav-link active">
-                                <i class="nav-icon fas fa-chart-bar"></i>
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Dashboard
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-upload"></i>
-                                <p>
-                                    Upload
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="https://dashboard.vodana.health" class="nav-link">
+                                        <i class="far fa-chart-bar nav-icon"></i>
+                                        <p>Internal</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="https://dashboard.vodana.health" class="nav-link" target="_blank">
+                                        <i class="far fa-chart-bar nav-icon"></i>
+                                        <p>External</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-hourglass"></i>
+                                <p>
+                                    CEDAR
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="https://cedar.metadatacenter.orgx/" class="nav-link" target="_blank">
+                                        <i class="far fa-hourglass nav-icon"></i>
+                                        <p>CEDAR Login</p>
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <a href="{{ url('/templates') }}" class="nav-link">
                                         <i class="far fa-file-code nav-icon"></i>
@@ -95,12 +119,6 @@
                                         <p>Bulk Upload</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="{{ url('/dhissyncs/create') }}" class="nav-link">
-                                        <i class="far fa-file-archive nav-icon"></i>
-                                        <p>DHIS2</p>
-                                    </a>
-                                </li>
 
                             </ul>
                         </li>
@@ -109,7 +127,7 @@
                             <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-download"></i>
                                 <p>
-                                    Backup
+                                    Backup/Restore
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -130,9 +148,9 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-sync-alt"></i>
+                                <i class="nav-icon fas fa-database"></i>
                                 <p>
-                                    Sync
+                                    Allegrograph
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
@@ -151,32 +169,60 @@
                                 </li>
                             </ul>
                         </li>
+
                         <li class="nav-item">
-                            <a href="#" class="nav-link active" style="padding-left: 18px">
-                                {{-- <i class="nav-icon fas fa-gear"></i> --}}
+                            <a href="{{ url('/dhissyncs/create') }}" class="nav-link active">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <p>
+                                    DHIS2
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a href="{{ url('/settings') }}" class="nav-link active" style="padding-left: 18px">
                                 <i style="font-size:20px" class="fa">&#xf013;</i>
                                 <p style="padding-left: 10px">
                                     Setting
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>
+                                    Admin
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('/settings') }}" class="nav-link">
-                                        {{-- <i class="far fa-gear nav-icon"></i> --}}
-                                        <i style="font-size:20px" class="fa">&#xf013;</i>
-                                        <p style="padding-left: 10px">BulkUpload</p>
+                                    <a href="{{url('/admin/users')}}" class="nav-link" name="user">
+                                        <i class="nav-icon fas fa-users nav-icon"></i>
+                                        <p>User</p>
+                                    </a>
+                                    @error('user')
+                                    <div class="text-danger">{{$message}}</div>
+                                    @enderror
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('/admin/roles')}}" class="nav-link">
+                                        <i class="nav-icon fas fa-list nav-icon"></i>
+                                        <p>Role</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('/allegrosettings')}}" class="nav-link">
-                                        {{-- <i class="far fa-gear nav-icon"></i> --}}
-                                        <i style="font-size:20px" class="fa">&#xf013;</i>
-                                        <p style="padding-left: 10px">Allegrograph</p>
+                                    <a href="{{url('/admin/permissions  ')}}" class="nav-link">
+                                        <i class="nav-icon fas fa-pen nav-icon"></i>
+                                        <p>Permission</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
+
+
                     </ul>
                 </nav>
             </div>

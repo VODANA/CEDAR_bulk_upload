@@ -64,7 +64,9 @@ class SyncCEDARToAllegroController extends Controller
       */  
       //  $templates =  new Template;
         $templateJson=Template::all(); //->getTemplate("Anten");
-        dd($templateJson);
+        $templateArray = json_decode($templateJson, true);
+       // foreach
+        dd($templateArray[9]['title']);
       /*  $dataElementsJson = file_get_contents(base_path($p));
         $templateArray = json_decode($templateJson, true);
         $dataElementsArray = json_decode($dataElementsJson, true);

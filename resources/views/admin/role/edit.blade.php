@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -14,12 +14,14 @@
                     </div>
                     @endif
 
-                    <form method="POST" action='{{ route("admin.roles.update", $role->id) }}' enctype="multipart/form-data">
+                    <form method="POST" action='{{ route("admin.roles.update", $role->id) }}'
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group">
-                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{$role->name}}">
+                            <input class="form-control" type="text" name="name" placeholder="Name"
+                                value="{{$role->name}}">
                             @error('name')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -32,7 +34,9 @@
                         <div class="form-group">
                             <div class="col-md-10">
                                 <div class="checkbox">
-                                    <input id="checkPermissionAll" type="checkbox" value="1" {{auth()->user()->roleHasPermissions($role, $allPermissions) ? 'checked' : ''}} />
+                                    <input id="checkPermissionAll" type="checkbox" value="1"
+                                        {{auth()->user()->roleHasPermissions($role, $allPermissions) ? 'checked' : ''}}
+                                    />
 
                                     <label for="checkPermissionAll">
                                         All
@@ -53,7 +57,11 @@
                             <div class="row mt-1 mb-1 ml-1">
                                 <div class="col-md-3">
                                     <div class="checkbox">
-                                        <input id="{{$i}}Management" type="checkbox" name="group[]" value="{{$group->group_name}}" onclick="checkPermissionByGroup('role-{{$i}}-management-checkbox', this)" {{auth()->user()->roleHasPermissions($role, $permissions) ? 'checked' : ''}} />
+                                        <input id="{{$i}}Management" type="checkbox" name="group[]"
+                                            value="{{$group->group_name}}"
+                                            onclick="checkPermissionByGroup('role-{{$i}}-management-checkbox', this)"
+                                            {{auth()->user()->roleHasPermissions($role, $permissions) ? 'checked' : ''}}
+                                        />
 
                                         <label for="{{$i}}Management">
                                             {{$group->group_name}}
@@ -66,7 +74,10 @@
 
                                     @foreach($permissions as $permission)
                                     <div class="checkbox">
-                                        <input id="checkPermission{{$permission->id}}" type="checkbox" name="permissions[]" value="{{$permission->name}}" onclick="checkSinglePermission('role-{{$i}}-management-checkbox', '{{$i}}Management', {{count($permissions)}})" {{$role->hasPermissionTo($permission->name) ? 'checked' : ''}} />
+                                        <input id="checkPermission{{$permission->id}}" type="checkbox"
+                                            name="permissions[]" value="{{$permission->name}}"
+                                            onclick="checkSinglePermission('role-{{$i}}-management-checkbox', '{{$i}}Management', {{count($permissions)}})"
+                                            {{$role->hasPermissionTo($permission->name) ? 'checked' : ''}} />
 
                                         <label for="checkPermission{{$permission->id}}">
                                             {{$permission->name}}
@@ -82,7 +93,8 @@
                         <!-- Permissions End -->
 
                         <div class="form-group">
-                            <a class="btn btn-danger mr-1" href='{{ route("admin.roles.index") }}' type="submit">Cancel</a>
+                            <a class="btn btn-danger mr-1" href='{{ route("admin.roles.index") }}'
+                                type="submit">Cancel</a>
                             <button class="btn btn-success" type="submit">Save</button>
                         </div>
                     </form>

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,8 @@
                     </div>
                     @endif
 
-                    <p><a class="btn btn-success" href='{{ route("admin.permissions.create") }}'><i class="fa fa-plus"></i> Create Permission</a></p>
+                    <p><a class="btn btn-success" href='{{ route("admin.permissions.create") }}'><i
+                                class="fa fa-plus"></i> Create Permission</a></p>
 
                     <table class="table table-bordered">
                         <thead>
@@ -37,7 +38,7 @@
                                 <td>
                                     {{ $permission->name ?? 'N/A' }}
                                 </td>
-                                
+
                                 <td>
                                     {{ $permission->group_name ?? 'N/A' }}
                                 </td>
@@ -47,9 +48,12 @@
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-success d-block mb-2" href='{{ route("admin.permissions.edit", $permission->id) }}'><i class="fa fa-pencil"></i> Edit</a>
+                                    <a class="btn btn-success d-block mb-2"
+                                        href='{{ route("admin.permissions.edit", $permission->id) }}'><i
+                                            class="fa fa-pencil"></i> Edit</a>
 
-                                    <form method="POST" action='{{ route("admin.permissions.destroy", $permission->id) }}'>
+                                    <form method="POST"
+                                        action='{{ route("admin.permissions.destroy", $permission->id) }}'>
                                         {{ csrf_field() }}
                                         {{ method_field('DELETE') }}
 
@@ -68,7 +72,7 @@
                             @endforelse
                         </tbody>
                     </table>
-                    
+
                     <!-- Pagination  -->
                     <div class="d-flex justify-content-center">
                         {{ $permissions->links() }}

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -14,7 +14,8 @@
                     </div>
                     @endif
 
-                    <p><a class="btn btn-success" href='{{ route("admin.users.create") }}'><i class="fa fa-plus"></i> Create User</a></p>
+                    <p><a class="btn btn-success" href='{{ route("admin.users.create") }}'><i class="fa fa-plus"></i>
+                            Create User</a></p>
 
                     <table class="table table-bordered">
                         <thead>
@@ -40,11 +41,11 @@
                                 <td>
                                     {{ $user->name ?? 'N/A' }}
                                 </td>
-                                
+
                                 <td>
                                     {{ $user->email ?? 'N/A' }}
                                 </td>
-                                
+
                                 <td>
                                     {{ optional($user->roles)[0]->name ?? 'N/A' }}
                                 </td>
@@ -54,7 +55,9 @@
                                 </td>
 
                                 <td>
-                                    <a class="btn btn-success d-block mb-2" href='{{ route("admin.users.edit", $user->id) }}'><i class="fa fa-pencil"></i> Edit</a>
+                                    <a class="btn btn-success d-block mb-2"
+                                        href='{{ route("admin.users.edit", $user->id) }}'><i class="fa fa-pencil"></i>
+                                        Edit</a>
                                 </td>
                                 <td>
                                     <form method="POST" action='{{ route("admin.users.destroy", $user->id) }}'>

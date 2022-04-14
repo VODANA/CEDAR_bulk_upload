@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -19,21 +19,24 @@
                         @csrf
 
                         <div class="form-group">
-                            <input class="form-control" type="text" name="name" placeholder="Name" value="{{ old('name') }}">
+                            <input class="form-control" type="text" name="name" placeholder="Name"
+                                value="{{ old('name') }}">
                             @error('name')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <input class="form-control" type="text" name="group_name" placeholder="Group Name" value="{{ old('group_name') }}">
+                            <input class="form-control" type="text" name="group_name" placeholder="Group Name"
+                                value="{{ old('group_name') }}">
                             @error('group_name')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
 
                         <div class="form-group">
-                            <a class="btn btn-danger mr-1" href='{{ route("admin.permissions.index") }}' type="submit">Cancel</a>
+                            <a class="btn btn-danger mr-1" href='{{ route("admin.permissions.index") }}'
+                                type="submit">Cancel</a>
                             <button class="btn btn-success" type="submit">Save</button>
                         </div>
                     </form>

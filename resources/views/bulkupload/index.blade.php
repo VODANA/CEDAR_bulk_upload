@@ -10,11 +10,11 @@
                 <div class="card-body">
                     @if (session('message'))
                     <div class="alert alert-success" role="alert">
-                        {{ session('message') }}
                     </div>
                     @endif
 
                     <p><a class="btn btn-success" href='{{ route("bulkuploads.create") }}'><i class="fa fa-plus"></i> Upload Bulk Input</a></p>
+                    {{ session('message') }}
 
                     <table class="table table-bordered">
                         <thead>

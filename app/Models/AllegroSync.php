@@ -104,7 +104,7 @@ class AllegroSync extends Model
       return $uploaded;
     }
     public function postToAllegro($secureurl , $apiKey , $input){
-        $secureurl="http://localhost:10035/repositories/VODANA/statements";
+        $secureurl="http://localhost:10035/repositories/Covid/statements";
         $content_type='text/plain';
         $api_key='BLPdhZ90uMf8q4';
         $ch = curl_init();

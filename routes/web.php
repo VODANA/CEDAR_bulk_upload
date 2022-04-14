@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileUpload;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ Auth::routes();
 Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',  'as'=>'admin.', 'middleware' => 'auth' ], function () { 
 
   Route::get('/', function () {
-    return redirect(route('templates.index'));
+    return redirect(route('templates.create'));
   });
   
   //naming convention ignored for dashboard as /admin/dashboards sounds inappropriate!
@@ -46,6 +47,7 @@ Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',
 
   //Route::get('/allegrosync/sync', [AllegroSync::class, 'allegrosync/sync']);
   //Route::post('/post', [AllegroSync::class, 'allegroSync'])->name('allegroSync');
+
   //Route::get('/backups/restore', [BackupController::class, 'restoreDb']);
   //Route::post('/backups/restore', [BackupController::class, 'restore'])->name('restore');
 
@@ -62,14 +64,20 @@ Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',
   Route::resource('backups', 'BackupController'); 
   Route::resource('allegrosettings', 'AllegroSettingController'); 
   Route::resource('dhissyncs', 'DHISSyncController'); 
+  Route::resource('upload', 'FileUpload'); 
+  Route::resource('synccedartoallegros', 'SyncCEDARToAllegroController'); 
+  
 
 });
+
+Route::get('/upload/upload-file', [FileUpload::class, 'createForm']);
+Route::post('/upload/upload-file', [FileUpload::class, 'fileUpload'])->name('fileUpload');
 
 //Frontend
-/*Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
-  Route::resource('products', 'ProductController'); 
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
+  Route::resource('upload', 'FileUpload'); 
 });
-*/
+
 //Frontend
 Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
   Route::resource('templates', 'TemplateController'); 
@@ -91,16 +99,20 @@ Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'',
   Route::resource('allegrosyncs', 'AllegroSyncController'); 
 });
 
-Route::group([ 'namespace'=> '\App\Http\Controllers'], function () { 
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
   Route::resource('synctoallegros', 'SyncToAllegroController'); 
 });
 
-Route::group([ 'namespace'=> '\App\Http\Controllers'], function () { 
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
   Route::resource('backups', 'BackupController'); 
 }); 
 
-Route::group([ 'namespace'=> '\App\Http\Controllers'], function () { 
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
   Route::resource('dhissyncs', 'DHISSyncController'); 
+}); 
+
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
+  Route::resource('synccedartoallegros', 'SyncCEDARToAllegroController'); 
 }); 
 //Route::get('backups/download-zip', [BackupController::class, 'downloadZip']);
 //Route::get('backups/restoreDB', [BackupController::class, 'backups']);

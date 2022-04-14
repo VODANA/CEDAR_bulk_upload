@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 @section('content')
 <div class="container">
@@ -56,12 +56,17 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
+                                @if (Route::has('password.request'))
+                                    <a class="btn btn-warning" class="btn btn-link" href="{{ route('register') }}">
+                                        {{ __('Crete Account') }}
+                                    </a>
+                                @endif
                                 @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
                                     </a>
                                 @endif
+
                             </div>
                         </div>
                     </form>

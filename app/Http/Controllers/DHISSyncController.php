@@ -61,81 +61,16 @@ class DHISSyncController extends Controller
     }
     public function store(Request $request){
         $sync_to_dhis = new DHISSync;
-        $anc=$sync_to_dhis->getANCMonthlyReport();
-        //  dd($ga_grater_17);
+      //  dd($request->period);
 
 
         $fileName = time().'_'.$request->file_path->getClientOriginalName();
         $filePath = $request->file('file_path')->storeAs('uploads', $fileName, 'public');
         $sync_to_dhis->file_path = 'storage/app/public/'. $filePath;
         $sync_to_dhis->period= $request->name;
-     
         //$setting = new Setting;
      //   $setting=$setting->getSettings(auth()->id());
         $dhis_report_template = file_get_contents(base_path($sync_to_dhis->file_path));
-   
-
-        $dhis='{
-            "dataValues": [
-                {
-                    "dataElement": "cmav5iXqALq",
-                    "categoryOptionCombo": "Ag4OgKZMVDG",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "12"
-                },
-                {
-                    "dataElement": "cmav5iXqALq",
-                    "categoryOptionCombo": "QsPXdfSZPX0",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "10"
-                },
-                {
-                    "dataElement": "lotDArt3TsU",
-                    "categoryOptionCombo": "Y6mCxOaXf15 ",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "20"
-                },
-                {
-                    "dataElement": "lotDArt3TsU",
-                    "categoryOptionCombo": "XoVZdRcCyu8",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "21"
-                },
-                {
-                    "dataElement": "lotDArt3TsU",
-                    "categoryOptionCombo": "OsOMSbkWYIN",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "22"
-                },
-                {
-                    "dataElement": "dCyyyAiuofb",
-                    "categoryOptionCombo": "Y6mCxOaXf15 ",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "30"
-                },
-                {
-                    "dataElement": "dCyyyAiuofb",
-                    "categoryOptionCombo": "XoVZdRcCyu8",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "31"
-                },
-                {
-                    "dataElement": "dCyyyAiuofb",
-                    "categoryOptionCombo": "OsOMSbkWYIN",
-                    "period": "201403",
-                    "orgUnit": "eRYEIdx853B",
-                    "value": "32"
-                }
-        
-            ]
-        }';
         //$synctoallegros =SyncToAllegro::where('Age',['@value'=>41])->get();;
 
 
@@ -145,17 +80,24 @@ class DHISSyncController extends Controller
         //dd($test->dataValues[0]->value);//->dataValues->dataElement);
        // dd($dhis_data_elements);
 
+        $anc=$sync_to_dhis->getANCMonthlyReport($dhis_data_elements);
+       // dd(json_encode($dhis_data_elements));
 
-        $result = $sync_to_dhis->syncDHIS($dhis_data_elements,$anc);
+        $result = $sync_to_dhis->syncDHIS2($dhis_data_elements,$anc,json_encode($dhis_data_elements));
+
         if(!$result) {
-            foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
+           /* foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
                 $dataelement->value=$anc[$key]->count();
-                $dataelement->period=date("Ym");
-            }
+                $dataelement->period=date("Y").date("m")-1;
+            }*/
             $dhis2_content=json_encode($dhis_data_elements);
-
+           // foreach($dhis2_content as $key => $value)
+             //  echo "Key: ".$key."  Value: ".$value;
+            //dd($dhis2_content['dataElements']["basedOn"]);    
+          //  dd($dhis2_content['']);
           //  $dhis2=fopen('dhis2.json','c',$dhis2_data);
             $dhis2_json_report="dhis2.json";
+
             $dhis_json = fopen($dhis2_json_report, "w") or die("Unable to open file!");
             fwrite($dhis_json, $dhis2_content);
             fclose($dhis_json);
@@ -167,7 +109,7 @@ class DHISSyncController extends Controller
         return response()->download(public_path($dhis2_json_report));
         }
   
-    return view('synctoallegro.index',compact('synctoallegros'))
+    return view('dhissync.index',compact('sync_to_dhis'))
         ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 }

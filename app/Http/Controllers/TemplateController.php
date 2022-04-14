@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\TemplateRequest;
 use App\Models\Template;
-use App\Models\BulkUpload;
 use App\Models\Setting;
-
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 class TemplateController extends Controller
 {
@@ -18,30 +17,18 @@ class TemplateController extends Controller
 
     public function index()
     {
-        $templates =  Template::all();
-       // dd($templates);
-
         $data['templates'] = Template::latest()->get();
-
         return view('template.index', $data);
     }
 
     public function create()
     {
-           // $p="storage/app/public/uploads/1646419827_CovidTemplate.json";
-            $p="storage/app/public/uploads/1646418577_uganda.json";
-
-            $templateJson = file_get_contents(base_path($p));
-            $templateArray = json_decode($templateJson, true);
-           // dd($templateArray);
-            $data['templates']=$templateArray; //[$templateArray['_ui']['order'][9]]['_valueConstraints']['literals']; //['properties'][$templateArray['_ui']['order'][9]]['_valueConstraints']['literals'];
-
-        return view('template.create', $data);
+        return view('template.create');
     }
 
     public function store(TemplateRequest $request)
     {
-      //  dd($request);
+      //  dd($request->file_path->getClientOriginalName());
         $request->validate(['file_path' => 'required|mimes:csv,txt,xlx,xls,pdf,json|max:2048']);
         $template = new Template;
 
@@ -52,9 +39,8 @@ class TemplateController extends Controller
             $template->name = $request->name;
             $template->description = $request->description;
             $template->folder_id = $request->folder_id;
-
             $template->save();
-        
+
             $notification = array(
                 'message' => 'Template saved successfully!',
                 'alert-type' => 'success'
@@ -62,6 +48,7 @@ class TemplateController extends Controller
 
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
+           // dd($setting);
 
             $secureurl ="https://resource.".$setting->url."/templates?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$template->folder_id; //Folder Id
             $templateJson = file_get_contents(base_path($template->file_path));

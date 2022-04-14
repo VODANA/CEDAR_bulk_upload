@@ -20,8 +20,11 @@ class Backup extends Eloquent
     ];
 
     public function createBackup($backup_dir='', $database='') {
-        $backup_path=$backup_dir."/Backup-".date('dMY');
-        $command = "mongodump --db ".$database." --out ".$backup_dir."/Backup-".date('dMY');    
+      //  dd($backup_dir);
+        $backup_path=$backup_dir."/".date('dMY');
+        $command = "mongodump --db ".$database." --gzip -o ".$backup_path;
+       // $command = "mongodump --db ".$database." --out ".$backup_dir."/Backup-".date('dMY');    
+       // dd($command);
         $dumped=exec($command);
         return $dumped;
     }
@@ -29,8 +32,9 @@ class Backup extends Eloquent
     public function zipBackup($backup_dir ,  $database_name) {
 
         $zip = new ZipArchive;
-        $backup_path=$backup_dir."/Backup-".date('dMY');
-        $fileName = $database_name.date('dMY').'-'.time().'.zip';
+        $backup_path=$backup_dir."/".date('dMY');
+      //  dd($backup_path);
+        $fileName = $database_name.date('dMY').'.gz';
         if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE)
         {
             $files = File::files($backup_path.'/'.$database_name);
@@ -44,8 +48,9 @@ class Backup extends Eloquent
             $zip->close();
         }
 
-        $store_in_path= "cp $fileName $backup_dir && rm -R $backup_path";
-
+        $store_in_path= "cp $fileName $backup_dir";
+       // dd($backup_dir);
+      //  dd($store_in_path);
         exec($store_in_path);
         
 
@@ -53,9 +58,33 @@ class Backup extends Eloquent
 
     }
     public function restoreBackup($backup_dir='', $database='') {
-        $command= "mongorestore --drop --db ".$database." ".$backup_dir."/".$database;
+     //   dd('here'.$database);
+       // $path=base_path("storage/app/public/uploads/cedar06Apr2022-1649251643");
+     //   dd('here'.$backup_dir);
+        //$command= "mongorestore --drop --db ".$database." ".base_path($backup_dir);
+       /* $path=base_path($backup_dir);
+        $command= "unzip ".$path;
         $restored=exec($command);
-       // dd($command);
+        dd($command);*/
+        $backup_path="/var/backups/mongobackups";
+        $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/".$database;
+
+        $restored=exec($command);
+      //  dd('here: '.$command);
+
+      //  $command= "unzip ".$backup_path;
+
+    //dd('here'.$command);
+
+        $command1= "mongorestore --drop --db ".$database." --gzip --db ".$database." ".$backup_path."/".$database;
+        //  $command= "mongorestore --drop --db ".$database." --gzip --archive=".base_path($backup_dir);
+
+        $command2= "rm ".$backup_path."/".$database."/*";
+      //  dd($command2);
+        $command = $command1." && ".$command2;
+     //   dd($command1);
+        $restored=exec($command);
+     //   dd($command);
         return $restored;
     }
 

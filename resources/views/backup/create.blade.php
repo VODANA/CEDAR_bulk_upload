@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Create Backup') }}</div>
+                <div class="card-header"><h2>{{ __('Create Backup') }}</h2></div>
 
                 <div class="card-body">
 
@@ -24,14 +24,14 @@
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
-                        <div class="form-group">
+                      <!--  <div class="form-group">
                             <textarea class="form-control" name="description" placeholder="description"></textarea> 
                             @error('description')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
-                        </div>
+                        </div> --> <br/>
                         <div class="form-group">
-                            <input class="form-control" type="file" name="backup_dir" placeholder="Backup Path">
+                            <input class="form-control" type="text" name="backup_dir" placeholder="Backup Path">
                             @error('backup_path')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
@@ -44,8 +44,8 @@
                         </div>
 
                         <div class="form-group">
-                            <a class="btn btn-danger mr-1" href='{{ route("backups.store") }}' type="submit">Cancel</a>
-                            <button class="btn btn-success" type="submit">Save</button>
+                            <!--<a class="btn btn-danger mr-1" href='{{ route("backups.store") }}' type="submit">Cancel</a>-->
+                            <button class="btn btn-success" type="submit">Take Backup</button>
                         </div>
                     </form>
                 </div>

@@ -13,7 +13,6 @@
                         {{ session('message') }}
                     </div>
                     @endif
-
                     <p><a class="btn btn-success" href='{{ route("templates.create") }}'><i class="fa fa-plus"></i> Create Template</a></p>
 
                     <table class="table table-bordered">
@@ -40,7 +39,7 @@
                         <tbody>
                             @forelse($templates as $template)
                             <tr>
-                            <td>
+                                <td>
                                     {{ $template->name ?? 'N/A' }}
                                 </td>
                                 <td>

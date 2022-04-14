@@ -48,7 +48,7 @@ class BackupController extends Controller
         return view('backup.index',compact('backup'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
-    public function restoreDb(){
+    public function restoreForm(){
         return view('backup.restore');
     }
     
@@ -64,15 +64,15 @@ class BackupController extends Controller
     }
 
 
-    public function restore(Request $request)
+    public function restoreDb(Request $request)
     {
-          /*  $backup = new Backup;
-            $backup_dir = "/var/backups/mongobackups/Backup-MonMar2022-1647877591/cedar";
+            $backup = new Backup;
+      /*    $backup_dir = "/var/backups/mongobackups/Backup-MonMar2022-1647877591/cedar";
             $database_name= "cedar";
             $backup->restoreBackup($backup_dir , $database_name);
-
+*/
         return redirect()->route('backups.index')
-        ->with('success','Backup Created successfully.');*/
+        ->with('success','Backup Created successfully.');
     }
 
 
@@ -111,8 +111,9 @@ class BackupController extends Controller
             $database_name= "cedar";
         
         $backup = new Backup;
-        $backup_dir = "/var/backups/mongobackups";///cedar19Mar2022-1647723066.zip";
+      //  $backup_dir = "/var/backups/mongobackups";///cedar19Mar2022-1647723066.zip";
         $backup_created=$backup->createBackup($backup_dir , $database_name);
+     //   dd($backup_created);
         $zipped=$backup->zipBackup($backup_dir , $database_name);
         
         return $zipped;

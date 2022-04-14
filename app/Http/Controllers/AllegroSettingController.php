@@ -19,7 +19,7 @@ class AllegroSettingController extends Controller
 
     public function index()
     {
-        $data['allegrosettings'] = AllegrpSetting::latest()->get();
+        $data['allegrosettings'] = AllegroSetting::latest()->get();
         return view('allegrosetting.index', $data);
     }
 

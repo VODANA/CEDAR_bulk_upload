@@ -10,7 +10,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class SyncToAllegro extends Eloquent
 {
 	protected $connection = 'mongodb';
-	protected $collection = 'anc';
+	protected $collection = 'template-instances';
     protected $fillable = [
         'rdf',
         /*"Health_Facility_name", 
@@ -54,37 +54,52 @@ class SyncToAllegro extends Eloquent
         }
         return $inputData;
     }
-
+    public function getTemplateInstances($title){
+      //return Template::where('schema:name', '%like%', $title )->get();
+      return SyncToAllegro::whereRaw(['schema:name' => ['$regex' => $title]])->get();
+    }
   //  public function bulkSync($source_file , $secureurl , $apiKey , $vocabularyUrl, $templateJson){
     public function bulkSync($templateJson){
+       // dd($templateJson);
+
         // delete $templateJson["@id"];
         $templateArray = json_decode($templateJson, true);
-        // $template_id=$templateArray["@id"];
+       
         // unset($templateArray["@id"]);
         //unset($templateArray["_id"]);
         // $templateArray = json_encode($templateJson, true);
         $rdf="";
-        // dd($templateArray);
-         foreach($templateArray as $key=>$value ) {
+        foreach($templateArray as $key=>$value ) {
           //  echo $key;
+       //   dd($templateArray);
             //echo "<br/>";
-            if($key!='@context' && is_array($value)) {
-                    //   dd($templateArray['@context'][$key]);
-                    //   echo $templateArray['@context'][$key]['@value'];
-                    $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$key],$value['@value']);
-            
-                    $rdf=$rdf." ".$rdf_new;
-                }
-            }
-                
+            if(array_key_exists('@id', $templateArray)){
+              $template_id=$templateArray["@id"];
+      
+              //  continue;
+              if($key!='@context' && is_array($value)) {
+                    //  dd($templateArray['@context']);
+                      //   echo $templateArray['@context'][$key]['@value'];
+                      if(array_key_exists('@id', $value)) {
+                          $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$key],$value['@id']);
+                          $rdf=$rdf." ".$rdf_new;
+                      }
+                      elseif(array_key_exists('@value', $value)){
+                          $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$key],$value['@value']);
+                          $rdf=$rdf." ".$rdf_new;
+                      }
+               }
+            } 
+          }
           //  $rdf_context=$this->getRDFContextVars($template_id,$templateArray,$value);
           //  $rdf=$rdf_context." ".$rdf;
           //  $input = json_encode($templateArray);  
              
           //$this->postData($secureurl , $apiKey , $input);
           $secureurl="";  $apiKey='';
-          $this->postToAllegro($secureurl , $apiKey , $rdf);
-             
+          if($rdf)
+              $this->postToAllegro($secureurl , $apiKey , $rdf);
+              
         // return $input;
          
     }
@@ -165,7 +180,7 @@ class SyncToAllegro extends Eloquent
       return $uploaded;
     }
     public function postToAllegro($secureurl , $apiKey , $input){
-        $secureurl="http://localhost:10035/repositories/VODANA/statements";
+        $secureurl="http://localhost:10035/repositories/Covid/statements";
         $content_type='text/plain';
         $api_key='BLPdhZ90uMf8q4';
         $ch = curl_init();

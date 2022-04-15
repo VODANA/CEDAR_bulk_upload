@@ -20,8 +20,8 @@ class SyncCEDARToAllegroController extends Controller
      */
     public function index()
     {
-      /*  $synctoallegros = SyncToAllegro::all();
-     //   dd($synctoallegros);
+       $synccedartoallegros = SyncToAllegro::all();
+     /*/   dd($synctoallegros);
         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
@@ -57,16 +57,18 @@ class SyncCEDARToAllegroController extends Controller
      */
     public function create(Request $request)
     {
+      
        /* $p="storage/app/public/uploads/AyderANC.json";
-        //  dd($request->all());
+        
           // $p="storage/app/public/uploads/1646503572_lumc.json";
         //$p="storage/app/public/uploads/1644926143_CovidTemplate.json";
       */  
       //  $templates =  new Template;
-        $templateJson=Template::all(); //->getTemplate("Anten");
-        $templateArray = json_decode($templateJson, true);
+      //  $templateJson=Template::all(); //->getTemplate("Anten");
+        //$templateArray = json_decode($templateJson, true);
        // foreach
-        dd($templateArray[9]['title']);
+       //if(!array_key_exists('title',$templateArray))
+          //dd($templateArray[18]['title']);
       /*  $dataElementsJson = file_get_contents(base_path($p));
         $templateArray = json_decode($templateJson, true);
         $dataElementsArray = json_decode($dataElementsJson, true);
@@ -95,29 +97,21 @@ class SyncCEDARToAllegroController extends Controller
      */
     public function store(Request $request)
     {
-       // request()->validate([
-         //   'rdf' => 'required',
-        //]);
-    //    dd($request->all());
-
-        $s = new SyncToAllegro;
+       /* $s = new SyncToAllegro;
         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
-        $apiKey = $setting->api_key;
-    //    $s->save($request->all());
-     //   $s->postToAllegro($secureurl , $apiKey , $request->rdf);
-        $instance_path="storage/app/public/uploads/CovidInstance2.json";
-        $templateJson = file_get_contents(base_path($instance_path));
-        $s->rdf=$templateJson;
-        $s->save();
-       // SyncToAllegro::create( $request->rdf);
+        $apiKey = $setting->api_key; */
+        $b = new SyncToAllegro;
+        $templateJson=$b->getTemplateInstances($request->template_name);
+       // dd($templateJson);
+        $b->bulkSync($templateJson);
 
-     //   $s->postToAllegro($secureurl , $apiKey , $request->rdf);
-       // $s->createJsonLDInstance($request->all() , $secureurl , $apiKey , $vocabularyUrl='', $templateJson);
-
-        return redirect()->route('synccedartoallegros.index')
-                        ->with('success','Instamces synced to AllegroGraph successfully.');
+        for($k=0; $k < count($templateJson); $k++) {
+            $b->bulkSync($templateJson[$k]);
+        }
+          return redirect()->route('synccedartoallegros.index')
+                          ->with('success','Instamces synced to AllegroGraph successfully.');
     }
 
 

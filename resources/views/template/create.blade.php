@@ -42,7 +42,6 @@
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>
-
                         <div class="form-group">
                             <a class="btn btn-danger mr-1" href='{{ route("templates.index") }}' type="submit">Cancel</a>
                             <button class="btn btn-success" type="submit">Save</button>

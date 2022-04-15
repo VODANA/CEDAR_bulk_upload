@@ -150,23 +150,30 @@
                             <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-database"></i>
                                 <p>
-                                    Allegrograph
+                                    AllegroGraph
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{url('/allegrosyncs')}}" class="nav-link">
+                                    <a href="{{url('/synccedartoallegros/create')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>Allegrograph Sync</p>
+                                        <p>CEDAR to AllegroGraph</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('/allegrosyncs')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>Allegrograph</p>
+                                        <p>Bulkupload</p>
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a href="{{url('/synctoallegros/create')}}" class="nav-link">
+                                        <i class="nav-icon fas fa-sync-alt nav-icon"></i>
+                                        <p>RDF to AllegroGraph</p>
+                                    </a>
+                    </li> 
+
                             </ul>
                         </li>
 

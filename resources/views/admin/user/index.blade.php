@@ -56,8 +56,8 @@
 
                                 <td>
                                     <a class="btn btn-success d-block mb-2"
-                                        href='{{ route("admin.users.edit", $user->id) }}'><i class="fa fa-pencil"></i>
-                                        Edit</a>
+                                        href='{{ route("admin.users.edit", $user->id) }}'>
+                                                                               Edit</a>
                                 </td>
                                 <td>
                                     <form method="POST" action='{{ route("admin.users.destroy", $user->id) }}'>
@@ -65,7 +65,6 @@
                                         {{ method_field('DELETE') }}
 
                                         <div class="form-group">
-                                            <i class="fa fa-times"></i>
                                             <input type="submit" class="btn btn-danger d-block" value="Delete">
                                         </div>
                                     </form>

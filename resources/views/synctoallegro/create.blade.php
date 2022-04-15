@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header"><h1>{{ __('Sync to DHIS2') }}</h1></div>
+                <div class="card-header"><h1>{{ __('Sync RDF to AllegroGraph') }}</h1></div>
 
                 <div class="card-body">
 

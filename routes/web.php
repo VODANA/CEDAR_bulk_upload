@@ -28,7 +28,7 @@ Auth::routes();
 Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',  'as'=>'admin.', 'middleware' => 'auth' ], function () { 
 
   Route::get('/', function () {
-    return redirect(route('/home'));
+    return redirect(route('/home')->name('home'));
   });
   
   //naming convention ignored for dashboard as /admin/dashboards sounds inappropriate!
@@ -69,6 +69,8 @@ Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',
   Route::resource('allegrosettings', 'AllegroSettingController'); 
   Route::resource('dhissyncs', 'DHISSyncController'); 
   Route::resource('upload', 'FileUpload'); 
+  Route::resource('synccedartoallegros', 'SyncCEDARToAllegroController'); 
+
 
 });
 
@@ -114,5 +116,10 @@ Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'',
 Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
   Route::resource('dhissyncs', 'DHISSyncController'); 
 }); 
+
+Route::group([ 'namespace'=> '\App\Http\Controllers', 'prefix' => '',  'as'=>'', 'middleware' => 'auth' ], function () { 
+  Route::resource('synccedartoallegros', 'SyncCEDARToAllegroController'); 
+}); 
+
 //Route::get('backups/download-zip', [BackupController::class, 'downloadZip']);
 //Route::get('backups/restoreDB', [BackupController::class, 'backups']);

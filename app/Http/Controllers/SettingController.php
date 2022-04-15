@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SettingRequest;
 use App\Models\Setting;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
+
 
 use Exception;
 
@@ -36,6 +38,20 @@ class SettingController extends Controller
             $setting->folder_id=$request->folder_id;
             $setting->location=$request->location;
             $setting->user_id=auth()->id();
+           
+            // HMIS Setting
+            $setting->hmis_username=$request->hmis_username;
+            $setting->hmis_password=$request->hmis_password;
+            $setting->hmis_url=$request->hmis_url;
+ 
+            // HMIS Setting
+            $setting->allegro_username=$request->allegro_username;
+            $setting->allegro_password=$request->allegro_password;
+            $setting->allegro_url=$request->allegro_url;
+
+            // HMIS Setting
+            $setting->backup_path=$request->backup_path;
+            
             $setting->save();   
 
             $notification = array(

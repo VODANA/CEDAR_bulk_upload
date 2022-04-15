@@ -12,6 +12,54 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">--}}
 
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <style>
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            transition: 0.4s;
+        }
+
+        /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse
+        over it (hover) */
+        .active,
+        .accordion:hover {
+            background-color: #ccc;
+        }
+
+        /* Style the accordion panel. Note: hidden by default */
+        .panel {
+            padding: 50px;
+            margin: 50 px;
+            background-color: white;
+            display: none;
+            overflow: hidden;
+        }
+
+        .accordion::after {
+            content: '\002B';
+            color: #777;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+
+        }
+
+        .accordion.active::after {
+            content: "\2212";
+        }
+
+        .setting {
+            margin-top: 1.2em;
+            margin-bottom: 1.2em;
+            font-size: 15px;
+        }
+    </style>
 
     {{--<script nonce="734119ed-d016-48ee-9090-46c055c1fef3">
         (function(w,d){!function(a,e,t,r,z){a.zarazData=a.zarazData||{},a.zarazData.executed=[],a.zarazData.tracks=[],a.zaraz={deferred:[]};var s=e.getElementsByTagName("title")[0];s&&(a.zarazData.t=e.getElementsByTagName("title")[0].text),a.zarazData.w=a.screen.width,a.zarazData.h=a.screen.height,a.zarazData.j=a.innerHeight,a.zarazData.e=a.innerWidth,a.zarazData.l=a.location.href,a.zarazData.r=e.referrer,a.zarazData.k=a.screen.colorDepth,a.zarazData.n=e.characterSet,a.zarazData.o=(new Date).getTimezoneOffset(),a.dataLayer=a.dataLayer||[],a.zaraz.track=(e,t)=>{for(key in a.zarazData.tracks.push(e),t)a.zarazData["z_"+key]=t[key]},a.zaraz._preSet=[],a.zaraz.set=(e,t,r)=>{a.zarazData["z_"+e]=t,a.zaraz._preSet.push([e,t,r])},a.dataLayer.push({"zaraz.start":(new Date).getTime()}),a.addEventListener("DOMContentLoaded",(()=>{var t=e.getElementsByTagName(r)[0],z=e.createElement(r);z.defer=!0,z.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(a.zarazData))),t.parentNode.insertBefore(z,t)}))}(w,d,0,"script");})(window,document);
@@ -150,30 +198,23 @@
                             <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-database"></i>
                                 <p>
-                                    AllegroGraph
+                                    Allegrograph
                                     <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{url('/synccedartoallegros/create')}}" class="nav-link">
-                                        <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>CEDAR to AllegroGraph</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
                                     <a href="{{url('/allegrosyncs')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>Bulkupload</p>
+                                        <p>Allegrograph Sync</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{url('/synctoallegros/create')}}" class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>RDF to AllegroGraph</p>
+                                        <p>Allegrograph</p>
                                     </a>
-                    </li> 
-
+                                </li>
                             </ul>
                         </li>
 
@@ -243,7 +284,15 @@
             </main>
 
         </div>
-
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+            
+            for (i = 0; i < acc.length; i++) { acc[i].addEventListener("click", function() { /* Toggle between adding and removing
+                the "active" class, to highlight the button that controls the panel */ this.classList.toggle("active"); /* Toggle
+                between hiding and showing the active panel */ var panel=this.nextElementSibling; if (panel.style.display==="block"
+                ) { panel.style.display="none" ; } else { panel.style.display="block" ; } }); }
+        </script>
         <script src="{{asset('js/app.js')}}" defer></script>
         @stack('scripts')
 

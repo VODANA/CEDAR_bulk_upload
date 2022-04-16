@@ -104,6 +104,10 @@ class AllegroSync extends Model
       return $uploaded;
     }
     public function postToAllegro($secureurl , $apiKey , $input){
+        $setting = new Setting;
+        $setting = $setting->getSettings(auth()->id());
+        $content_type='text/plain';
+    
         $secureurl="http://localhost:10035/repositories/Covid/statements";
         $content_type='text/plain';
         $api_key='BLPdhZ90uMf8q4';
@@ -117,8 +121,8 @@ class AllegroSync extends Model
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_USERNAME, 'admin');
-        curl_setopt($curl, CURLOPT_PASSWORD, 'letmein');
+        curl_setopt($curl, CURLOPT_USERNAME, $setting->allegro_username);
+        curl_setopt($curl, CURLOPT_PASSWORD, base64_decode($setting->allegro_password));
         curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
         //curl_setopt($curl, CURLOPT_PROXY, $proxy[0]);
         //curl_setopt($curl, CURLOPT_PROXYPORT, $proxy[1]);

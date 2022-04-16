@@ -80,6 +80,12 @@ class DHISSync extends Eloquent
     }  */
 
     public function syncDHIS($dhis_data_elements , $anc, $anc_json){
+      $setting = new Setting;
+      $setting = $setting->getSettings(auth()->id());
+      $content_type='text/plain';
+  
+      $pass=base64_decode($setting->hmis_password);  
+      $auth=base64_encode($setting->hmis_username.":".$pass);
        // dd($dhis_data_elements->dataValues[0]->dataElement);
         foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
             $dataelement->value=$anc[$key]->count();
@@ -95,9 +101,9 @@ class DHISSync extends Eloquent
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_HTTPHEADER => array(
-              'Authorization: Basic YWRtaW46MTIzNDU2NzhAQQ==',
-              'Cookie: JSESSIONID=0668FC706E5BEB6CFD45BAA67C1D88E4'
+              'Authorization: Basic '.$auth
             ),
+
           ));
         $uploaded = curl_exec($curl);
     } 
@@ -151,7 +157,6 @@ class DHISSync extends Eloquent
     $auth=base64_encode($setting->hmis_username.":".$pass);
   //  dd($aa);
   //  dd(base64_decode('YWRtaW46MTIzNDU2NzhAQQ=='));
-
     // dd($dhis_data_elements->dataValues[0]->dataElement);
      foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
         // dd($dataelement->comparison);

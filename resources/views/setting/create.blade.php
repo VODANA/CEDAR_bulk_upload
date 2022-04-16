@@ -10,7 +10,7 @@
     </div>
     @endif
 
-    <form method="POST" action='{{ route("settings.store") }}' enctype="multipart/form-data" class="setting">
+    <form method="POST" action='{{ route("settings.store") }}' enctype="multipart/form-data">
         @csrf
 
         <div class="accordion">
@@ -119,7 +119,9 @@
 
             <div class="form-group">
                 <input class="form-control" type="text" name="backup_path" placeholder="Backup path">
-
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="database_name" placeholder="Database name">
             </div>
 
         </div>
@@ -127,7 +129,6 @@
         <div class="form-group" style="margin:10px">
             <button class="btn btn-success" type="submit">Save Settings</button>
         </div>
-
     </form>
 </div>
 @endsection

@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <form method="POST" action='{{ route("settings.store") }}' enctype="multipart/form-data" class="setting">
+    <form method="POST" action='{{ route("settings.update" , $setting->id) }}' enctype="multipart/form-data" class="setting">
         @csrf
 
         <div class="accordion">

@@ -31,12 +31,6 @@ class DHISSync extends Eloquent
         return $anc;
     }
     public function getIndicatorValue($var,$varValue,$compare,$filterVar,$filterCriteria,$filterValue,$min,$max) {
-       // $y=date("Y");
-        //$m=date("m")-1;
-        //$d='1';
-        //$report_month=$y.$m.$d;
-       // dd($compare);
-       //db.anc.find({"Visit Number.rdfs:label":{$regex:"4th"}}).count();
         if(!$min && !$filterVar)
             return DHISSync::whereRaw([$var => [$compare => $varValue]])->where(['schema:name' => ['$regex' => 'Antenatal']])->count();
         elseif(!$min && $filterVar)
@@ -110,7 +104,54 @@ class DHISSync extends Eloquent
         return $uploaded;
   
   }
+  public function syncDHIS3($dhis_data_elements , $anc, $anc_json){
+  $setting = new Setting;
+  $setting = $setting->getSettings(auth()->id());
+  // dd($dhis_data_elements->dataValues[0]->dataElement);
+   foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
+      // dd($dataelement->comparison);
+     //  dd($dataelement->cutPoint);
+       $dataelement->value=$this->getIndicatorValue($dataelement->basedOn,$dataelement->cutPoint,$dataelement->comparison,$dataelement->filterVar,$dataelement->filterLogic,$dataelement->filterCutPoint,$dataelement->min,$dataelement->max);
+       $dataelement->period=date("Y").date("m")-1;
+       $content_type='text/plain';
+
+      $secureurl = $setting->hmis_url.'api/dataValues?de='.$dataelement->dataElement.'&pe='.$dataelement->period.'&ou='.$dataelement->orgUnit.'&co='.$dataelement->categoryOptionCombo.'&value='.$dataelement->value;
+     // dd($secureurl);
+
+      $ch = curl_init();
+      $curl = curl_init();
+      curl_setopt($curl, CURLOPT_URL, $secureurl);
+      curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+              'Content-Type: '.$content_type,
+              'Accept: '.$content_type,
+          ));
+      curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_POST, 1);
+      curl_setopt($curl, CURLOPT_USERNAME, $setting->hmis_username);
+      curl_setopt($curl, CURLOPT_PASSWORD, base64_decode($setting->hmis_password));
+     // curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
+      //curl_setopt($curl, CURLOPT_PROXY, $proxy[0]);
+      //curl_setopt($curl, CURLOPT_PROXYPORT, $proxy[1]);
+      $uploaded = curl_exec($curl);
+     // dd($rdf_uploaded);
+      curl_close($curl);
+
+   //dd($uploaded);
+} 
+   return $uploaded;
+
+}
   public function syncDHIS2($dhis_data_elements , $anc, $anc_json){
+    $setting = new Setting;
+    $setting = $setting->getSettings(auth()->id());
+    $content_type='text/plain';
+
+    $pass=base64_decode($setting->hmis_password);  
+    $auth=base64_encode($setting->hmis_username.":".$pass);
+  //  dd($aa);
+  //  dd(base64_decode('YWRtaW46MTIzNDU2NzhAQQ=='));
+
     // dd($dhis_data_elements->dataValues[0]->dataElement);
      foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
         // dd($dataelement->comparison);
@@ -127,10 +168,14 @@ class DHISSync extends Eloquent
          CURLOPT_FOLLOWLOCATION => true,
          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
          CURLOPT_CUSTOMREQUEST => 'POST',
+       //  CURLOPT_USERNAME => $setting->hmis_username,
+       //  CURLOPT_PASSWORD => base64_decode($setting->hmis_password),
+     //    CURLOPT_HTTPHEADER, array(
+      //      'Content-Type: '.$content_type,
+     //   )
          CURLOPT_HTTPHEADER => array(
-           'Authorization: Basic YWRtaW46MTIzNDU2NzhAQQ==',
-           'Cookie: JSESSIONID=0668FC706E5BEB6CFD45BAA67C1D88E4'
-         ),
+            'Authorization: Basic '.$auth
+          ),
        ));
      $uploaded = curl_exec($curl);
     // dd($uploaded);

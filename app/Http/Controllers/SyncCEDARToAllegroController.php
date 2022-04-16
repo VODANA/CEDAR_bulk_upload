@@ -97,18 +97,20 @@ class SyncCEDARToAllegroController extends Controller
      */
     public function store(Request $request)
     {
-       /* $s = new SyncToAllegro;
+       /* $s = new SyncToAllegro;*/
         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());
+      //  dd(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
-        $apiKey = $setting->api_key; */
+        $apiKey = $setting->api_key; 
         $b = new SyncToAllegro;
+     //   dd($setting->hmis_url);
         $templateJson=$b->getTemplateInstances($request->template_name);
-       // dd($templateJson);
-        $b->bulkSync($templateJson);
+      //  dd($request->repository);
+       // $b->bulkSync($templateJson);
 
         for($k=0; $k < count($templateJson); $k++) {
-            $b->bulkSync($templateJson[$k]);
+            $b->bulkSync($templateJson[$k] , $request->repository);
         }
           return redirect()->route('synccedartoallegros.index')
                           ->with('success','Instamces synced to AllegroGraph successfully.');

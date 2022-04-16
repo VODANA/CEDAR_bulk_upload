@@ -18,7 +18,7 @@ class BackupController extends Controller
      */
     public function index()
     {
-        $backup = new Backup;
+       /* $backup = new Backup;
         $backup_dir="/var/backups/mongobackups/Backup-MonMar2022-1647877677";
         $database="cedar";
         $backup->restoreBackup($backup_dir, $database);        
@@ -26,7 +26,7 @@ class BackupController extends Controller
 
       
 
-     /*    $setting = new Setting;
+         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
         //Read template instance
@@ -44,9 +44,34 @@ class BackupController extends Controller
         //$users = Book::where('Sex','Male')->get();
         //dd($instances);
         //$books=json_decode($books);
-*/
+
         return view('backup.index',compact('backup'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+            ->with('i', (request()->input('page', 1) - 1) * 5);*/
+
+            $setting = new Setting;
+            $setting=$setting->getSettings(auth()->id());
+           // dd($setting->backup_path);
+             if($setting->backup_path)
+                 $backup_dir = $setting->backup_path;
+             else
+                 $backup_dir = "/var/backups/mongobackups";
+     
+             if($setting->database_name)
+                 $database_name = $setting->database_name;
+             else
+                 $database_name= "cedar";
+             
+             $backup = new Backup;
+           //  $backup_dir = "/var/backups/mongobackups";///cedar19Mar2022-1647723066.zip";
+             $backup_created=$backup->createBackup($backup_dir , $database_name);
+          //   dd($backup_created);
+             $zipped=$backup->zipBackup($backup_dir , $database_name);
+             
+             return $zipped;
+     
+         return redirect()->route('backups.index')
+             ->with('success','Backup Created successfully.');
+     
     }
     public function restoreForm(){
         return view('backup.restore');
@@ -100,6 +125,9 @@ class BackupController extends Controller
                         ->with('success','Instamces synced to AllegroGraph successfully.');
         */
        // dd($request->backup_dir->getClientOriginalPath());
+       $setting = new Setting;
+       $setting=$setting->getSettings(auth()->id());
+       dd($setting->backup_path);
         if($request->backup_dir)
             $backup_dir = $request->backup_dir;
         else

@@ -59,9 +59,8 @@ class SyncToAllegro extends Eloquent
       return SyncToAllegro::whereRaw(['schema:name' => ['$regex' => $title]])->get();
     }
   //  public function bulkSync($source_file , $secureurl , $apiKey , $vocabularyUrl, $templateJson){
-    public function bulkSync($templateJson){
-       // dd($templateJson);
-
+    public function bulkSync($templateJson , $repository){
+       
         // delete $templateJson["@id"];
         $templateArray = json_decode($templateJson, true);
        
@@ -98,7 +97,7 @@ class SyncToAllegro extends Eloquent
           //$this->postData($secureurl , $apiKey , $input);
           $secureurl="";  $apiKey='';
           if($rdf)
-              $this->postToAllegro($secureurl , $apiKey , $rdf);
+              $this->postToAllegro($repository , $rdf);
               
         // return $input;
          
@@ -128,7 +127,7 @@ class SyncToAllegro extends Eloquent
             $input = json_encode($templateArray);  
             
             $this->postData($secureurl , $apiKey , $input);
-            $this->postToAllegro($secureurl , $apiKey , $rdf);
+            $this->postToAllegro($secureurl , $rdf);
             
        // return $input;
         
@@ -159,6 +158,8 @@ class SyncToAllegro extends Eloquent
         // return $command;
     }
     public function postData($secureurl , $apiKey , $input){
+        $setting = new Setting;
+        $setting = $setting->getSettings(auth()->id());
         $content_type='application/json';
         $ch = curl_init();
         $curl = curl_init();
@@ -166,7 +167,7 @@ class SyncToAllegro extends Eloquent
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: '.$content_type,
                 'Accept: '.$content_type,
-                'Authorization: apiKey '.$apiKey,
+                'Authorization: apiKey '.$setting->api_token,
             ));
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -179,10 +180,14 @@ class SyncToAllegro extends Eloquent
         curl_close($curl);
       return $uploaded;
     }
-    public function postToAllegro($secureurl , $apiKey , $input){
-        $secureurl="http://localhost:10035/repositories/Covid/statements";
+    public function postToAllegro($repository , $input){
+        $setting = new Setting;
+        $setting = $setting->getSettings(auth()->id());
+        $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
+       // dd($secureurl);
         $content_type='text/plain';
-        $api_key='BLPdhZ90uMf8q4';
+       // dd(base64_decode($setting->allegro_password));
+     //   $api_key='BLPdhZ90uMf8q4';
         $ch = curl_init();
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $secureurl);
@@ -193,8 +198,8 @@ class SyncToAllegro extends Eloquent
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_POST, 1);
-        curl_setopt($curl, CURLOPT_USERNAME, 'admin');
-        curl_setopt($curl, CURLOPT_PASSWORD, 'letmein');
+        curl_setopt($curl, CURLOPT_USERNAME, $setting->allegro_username);
+        curl_setopt($curl, CURLOPT_PASSWORD, base64_decode($setting->allegro_password));
         curl_setopt($curl, CURLOPT_POSTFIELDS, $input);
         //curl_setopt($curl, CURLOPT_PROXY, $proxy[0]);
         //curl_setopt($curl, CURLOPT_PROXYPORT, $proxy[1]);

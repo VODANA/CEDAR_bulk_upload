@@ -181,7 +181,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('/backups/create') }}" class="nav-link">
+                                    <a href="{{ route('backups.store') }}" class="nav-link">
                                         <i class="nav-icon fas fa-download nav-icon"></i>
                                         <p>Backup</p>
                                     </a>
@@ -203,16 +203,22 @@
                                 </p>
                             </a>
                             <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{url('/allegrosyncs')}}" class="nav-link">
+                            <li class="nav-item">
+                                    <a href="{{url('/synccedartoallegros/create')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>Allegrograph Sync</p>
+                                        <p>CEDAR to AllegroGraph</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{url('/allegrosyncs/create')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
-                                        <p>Allegrograph</p>
+                                        <p>Bulk to AllegroGraph</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{url('/synctoallegros/create')}}" class="nav-link">
+                                        <i class="nav-icon fas fa-sync-alt nav-icon"></i>
+                                        <p>RDF to AllegroGraph</p>
                                     </a>
                                 </li>
                             </ul>

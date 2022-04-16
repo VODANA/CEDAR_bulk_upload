@@ -41,12 +41,12 @@ class SettingController extends Controller
            
             // HMIS Setting
             $setting->hmis_username=$request->hmis_username;
-            $setting->hmis_password=$request->hmis_password;
+            $setting->hmis_password=base64_encode($request->hmis_password);
             $setting->hmis_url=$request->hmis_url;
- 
+          //  dd($setting->hmis_password);
             // HMIS Setting
             $setting->allegro_username=$request->allegro_username;
-            $setting->allegro_password=$request->allegro_password;
+            $setting->allegro_password=base64_encode($request->allegro_password);
             $setting->allegro_url=$request->allegro_url;
 
             // HMIS Setting
@@ -85,8 +85,11 @@ class SettingController extends Controller
     public function update(SettingRequest $request, Setting $setting)
     {
         try {
+         //   dd($request->all());
             $setting = $setting->update($request->all());
-
+          //  $setting->hmis_password=base64_encode($request->hmis_password);
+            //$setting->allegro_password=base64_encode($request->allegro_password);
+          //  $setting->save();   
             $notification = array(
                 'message' => 'Setting saved successfully!',
                 'alert-type' => 'success'

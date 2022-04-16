@@ -37,7 +37,7 @@
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>        
-                        <div class="form-group">
+                       <!-- <div class="form-group">
                             <input class="form-control" type="text" name="repository" placeholder="Allegro reporistory name">
                             @error('name')
                             <label class="text-danger">{{ $message }}</label>
@@ -48,7 +48,7 @@
                             @error('rdf')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
-                        </div>
+                        </div> -->
 
                         
                      

@@ -10,14 +10,21 @@ class Setting extends Eloquent
 {
     protected $connection = 'mongodb';
 	protected $collection = 'setting';
-   /* protected $fillable = [
+    protected $fillable = [
         'site_name',
         'url',
         'api_token',
         'folder_id',
         'location',
         'user_id',
-    ];*/
+        'hmis_username',
+        'hmis_password',
+        'hmis_url',
+        'allegro_username',
+        'allegro_password',
+        'allegro_url',
+        'backup_path',
+    ];
    /* public function user()
     {
         return $this->belongsTo(User::class);

@@ -40,6 +40,7 @@ class FileUpload extends Controller
             $setting = new Setting;
             $setting=$setting->getSetting();           // dd($filePath);
             $backup_dir = 'storage/app/public/'. $filePath;
+          //  dd($backup_dir);
             $database_name=$setting->database_name;
                         //$database_name= "cedar";
             $backup = new Backup; 

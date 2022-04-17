@@ -24,6 +24,7 @@ class Setting extends Eloquent
         'allegro_password',
         'allegro_url',
         'backup_path',
+        'database_name',
     ];
    /* public function user()
     {

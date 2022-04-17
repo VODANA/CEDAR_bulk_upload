@@ -80,13 +80,13 @@ class Backup extends Eloquent
         $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/".$database;
 
         $restored=exec($command);
-      //  dd('here: '.$command);
+     //   dd('here: '.$command);
 
       //  $command= "unzip ".$backup_path;
 
     //dd('here'.$command);
 
-        $command1= "mongorestore --drop --db ".$database." --gzip --db ".$database." ".$backup_path."/".$database;
+        $command1= "mongorestore --drop --db ".$database." --gzip --db ".$database." ".$backup_path."/cedar";//.$database;
         //  $command= "mongorestore --drop --db ".$database." --gzip --archive=".base_path($backup_dir);
 
         $command2= "rm ".$backup_path."/".$database."/*";

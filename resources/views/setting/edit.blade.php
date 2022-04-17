@@ -115,10 +115,17 @@
             {{ __('Backup') }}
         </div>
         <div class="panel">
-            <div class="form-group">
+        <div class="form-group">
                 <input class="form-control" type="text" name="backup_path" placeholder="Backup path"
                     value="{{$setting->backup_path}}">
                 @error('allegro_username')
+                <label class=" text-danger">{{ $message }}</label>
+                @enderror
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="database_name" placeholder="Backup path"
+                    value="{{$setting->database_name}}">
+                @error('database_name')
                 <label class=" text-danger">{{ $message }}</label>
                 @enderror
             </div>

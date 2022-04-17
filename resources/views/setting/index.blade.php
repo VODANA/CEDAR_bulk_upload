@@ -84,11 +84,11 @@
                         </td>
                     </tr>
                     <tr>
-                       <!-- <td>
+                        <td>
                             <a class="btn btn-success d-block mb-2" href='{{ route("settings.edit", $setting->id) }}'>
                                 Edit
                             </a>
-                        </td>-->
+                        </td>
                         <td>
                             <form method="POST" action='{{ route("settings.destroy", $setting->id) }}'>
                                 {{ csrf_field() }}

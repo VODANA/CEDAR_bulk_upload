@@ -20,8 +20,8 @@ class SyncToAllegroController extends Controller
      */
     public function index()
     {
-      /*  $synctoallegros = SyncToAllegro::all();
-     //   dd($synctoallegros);
+     $synctoallegros = SyncToAllegro::all();
+       /*  //   dd($synctoallegros);
         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
@@ -103,13 +103,14 @@ class SyncToAllegroController extends Controller
         $apiKey = $setting->api_key;
     //    $s->save($request->all());
      //   $s->postToAllegro($secureurl , $apiKey , $request->rdf);
-        $instance_path="storage/app/public/uploads/CovidInstance2.json";
-        $templateJson = file_get_contents(base_path($instance_path));
+    //  dd($request->rdf);
+      //  $instance_path="storage/app/public/uploads/CovidInstance2.json";
+        $templateJson = $request->rdf; //file_get_contents(base_path($instance_path));
         $s->rdf=$templateJson;
         $s->save();
        // SyncToAllegro::create( $request->rdf);
-
-     //   $s->postToAllegro($secureurl , $apiKey , $request->rdf);
+        $repository="Covid";
+        $s->postToAllegro($repository , $request->rdf);
        // $s->createJsonLDInstance($request->all() , $secureurl , $apiKey , $vocabularyUrl='', $templateJson);
 
         return redirect()->route('synctoallegros.index')

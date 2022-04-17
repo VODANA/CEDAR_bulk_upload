@@ -215,12 +215,12 @@
                                         <p>Bulk to AllegroGraph</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
+                                <!--<li class="nav-item">
                                     <a href="{{url('/synctoallegros/create')}}" class="nav-link">
                                         <i class="nav-icon fas fa-sync-alt nav-icon"></i>
                                         <p>RDF to AllegroGraph</p>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
                         </li>
 

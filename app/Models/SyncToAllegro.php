@@ -181,10 +181,10 @@ class SyncToAllegro extends Eloquent
       return $uploaded;
     }
     public function postToAllegro($repository , $input){
-        $setting = new Setting;
-        $setting = $setting->getSettings(auth()->id());
-        $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
-       // dd($secureurl);
+      $setting = new Setting;
+      $setting = $setting->getSettings(auth()->id());
+      $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
+       // dd($input);
         $content_type='text/plain';
        // dd(base64_decode($setting->allegro_password));
      //   $api_key='BLPdhZ90uMf8q4';

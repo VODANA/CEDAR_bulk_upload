@@ -57,7 +57,7 @@ class Backup extends Eloquent
       return response()->download(public_path($fileName));
 
     }
-    public function restoreBackup($backup_dir='', $database='') {
+    public function restoreBackup($restore_dir, $database) {
      //   dd('here'.$database);
        // $path=base_path("storage/app/public/uploads/cedar06Apr2022-1649251643");
      //   dd('here'.$backup_dir);
@@ -76,26 +76,28 @@ class Backup extends Eloquent
             $backup_path="/var/backups/mongobackups";
             $database="cedar";
         }
+        if(!$database)
+            $database="cedar";
 
-        $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/cedar";//.$database;
-
-        $restored=exec($command);
-     //   dd('here: '.$command);
+        $command= "unzip ".base_path($restore_dir)." -d ".$backup_path."/".$database;
+        $extracted=exec($command);
 
       //  $command= "unzip ".$backup_path;
 
-    //dd('here'.$command);
 
-        $command1= "mongorestore --drop --db ".$database." --gzip --db ".$database." ".$backup_path."/cedar";//.$database;
+        $command1= "mongorestore --drop --db ".$database." --gzip --db ".$database." ".$backup_path."/".$database;
         //  $command= "mongorestore --drop --db ".$database." --gzip --archive=".base_path($backup_dir);
+      //  dd($command1);
+        $restored=exec($command1);
+       // dd($command1);
 
         $command2= "rm ".$backup_path."/".$database."/*";
-      //  dd($command2);
-        $command = $command1." && ".$command2;
-     //   dd($command1);
-        $restored=exec($command);
-     //   dd($command);
-        return $restored;
-    }
+        $deleted=exec($command2);
 
+      return $restored;
+    }
+    public function clearAfterUse($restored_path) {
+          $command= "rm ".base_path($restored_path);
+          $del=exec($command);
+    }
 }

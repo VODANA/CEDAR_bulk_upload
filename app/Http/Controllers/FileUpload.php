@@ -37,14 +37,17 @@ class FileUpload extends Controller
             //$fileModel->file_path = 'storage/app/public/'. $filePath;
             //$fileModel->instance_path = 'storage/app/public/'. $tmpl_instance_path;
             //$fileModel->save();
+          //  dd($filePath);
             $setting = new Setting;
             $setting=$setting->getSetting();           // dd($filePath);
-            $backup_dir = 'storage/app/public/'. $filePath;
-          //  dd($backup_dir);
-            $database_name=$setting->database_name;
-                        //$database_name= "cedar";
+            $restore_file_dir = 'storage/app/public/'.$filePath;
+            if($setting->database_name)
+                $database_name=$setting->database_name;
+            else
+                $database_name="cedar";
             $backup = new Backup; 
-            $backup->restoreBackup($backup_dir , $database_name);
+            $backup->restoreBackup($restore_file_dir , $database_name);
+            $backup->clearAfterUse($restore_file_dir);
         
             return redirect()->route('login')
             ->with('success','Backup restored successfully.');

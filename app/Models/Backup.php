@@ -77,7 +77,7 @@ class Backup extends Eloquent
             $database="cedar";
         }
 
-        $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/".$database;
+        $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/cedar";//.$database;
 
         $restored=exec($command);
      //   dd('here: '.$command);

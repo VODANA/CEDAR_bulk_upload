@@ -32,7 +32,7 @@
                         </div> -->
 
                         <div class="form-group"><br/>
-                            <label> Path of CSV file to be uploaded</label>
+                            <label> Path of JSON report metadata to be uploaded</label>
                             <input class="form-control" type="file" name="file_path" placeholder="DHIS2 Reporting Template JSON">
                             @error('file_path')
                             <label class="text-danger">{{ $message }}</label>

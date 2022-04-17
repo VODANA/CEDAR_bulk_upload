@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class BulkUpload extends Model
+class BulkUpload extends Eloquent
 {
+    protected $connection = 'mongodb';
+    protected $collection = 'bulkuploadInfo';
+
     use HasFactory;
     protected $fillable = [
         'name',
@@ -38,9 +42,12 @@ class BulkUpload extends Model
          $inputData=$this->readCSVFile($source_file);
          // delete $templateJson["@id"];
          $templateArray = json_decode($templateJson, true);
-         $template_id=$templateArray["@id"];
-         unset($templateArray["@id"]);
-         $rdf="";
+         if(array_key_exists("@id", $templateArray)) {
+            $template_id=$templateArray["@id"];
+            unset($templateArray["@id"]);
+         } else
+            $template_id="";
+            $rdf="";
          foreach($inputData as $data ) {
              foreach($data as $field => $value ) {
                 if(array_key_exists($field, $templateArray) && array_key_exists('@value', $templateArray[$field])){
@@ -65,9 +72,8 @@ class BulkUpload extends Model
              
              $status=$this->postData($secureurl , $apiKey , $input);
              $this->postToAllegro($secureurl , $apiKey , $rdf);
-             
-           return $status;
-         }
+          }
+                     return $status;
     }
     public function getVocabularyURL($url,$label){
             $exploded=explode('/',$url);
@@ -77,8 +83,8 @@ class BulkUpload extends Model
         return $vocabularyUrl;
     }
     public function getRDFContextVars($template_id, $templateArray, $field_value) {
-         
-            $context_var="";
+        $context_var="";
+        if(array_key_exists("@context", $templateArray)) {
             $context_modifiedBy='<'.$template_id.'> <'.$templateArray['@context']['oslc'].'modifiedBy> "'.$templateArray['oslc:modifiedBy'].'" . ';
             $context_createdBy='<'.$template_id.'> <'.$templateArray['@context']['pav'].'createdBy> "'.$templateArray['oslc:modifiedBy'].'" . ';
             $context_createdOn='<'.$template_id.'> <'.$templateArray['@context']['pav'].'createdOn> "'.$templateArray['@context']['xsd'].'dateTime'. '" .';
@@ -86,6 +92,7 @@ class BulkUpload extends Model
             $context_description='<'.$template_id.'> <'.$templateArray['@context']['schema'].'description> "'.$templateArray['schema:description'].'" . ';
             $context_isBasedOn='<'.$template_id.'> <'.$templateArray['@context']['schema'].'isBasedOn> "'.$templateArray['schema:isBasedOn'].'" . ';
             $context_var=$context_var.$context_modifiedBy.$context_createdBy.$context_createdOn.$context_lastUpdatedOn.$context_description.$context_isBasedOn;
+        }
         return $context_var;  
     }    
     public function createRDF($template_id, $field_property, $field_value) {
@@ -111,10 +118,13 @@ class BulkUpload extends Model
         curl_close($curl);
 
         $rq_status=json_decode($uploaded);
-        if(array_key_exists("status", $rq_status) && $rq_status->status="BAD_REQUEST")
-            return false;
-        else
-            return true;
+        if( $rq_status) {
+            if(array_key_exists("status", $rq_status) && $rq_status->status="BAD_REQUEST")
+                 return false;
+            else
+                 return true;
+        } else 
+              return true;
      //  echo $rq_status->@context;
      // return $uploaded;
     }
@@ -123,6 +133,10 @@ class BulkUpload extends Model
         //Org Unit
         $setting = new Setting;
         $setting = $setting->getSettings(auth()->id());
+
+        if(!$setting )
+            return false;
+            
         $content_type='text/plain';
     
         $secureurl="http://localhost:10035/repositories/VODANA/statements";

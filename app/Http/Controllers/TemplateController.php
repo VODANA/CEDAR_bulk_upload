@@ -23,6 +23,7 @@ class TemplateController extends Controller
 
     public function create()
     {
+        
         return view('template.create');
     }
 
@@ -48,7 +49,9 @@ class TemplateController extends Controller
 
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
-           // dd($setting);
+
+            if(!$setting)
+                return view('setting.create');
 
             $secureurl ="https://resource.".$setting->url."/templates?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$template->folder_id; //Folder Id
             $templateJson = file_get_contents(base_path($template->file_path));

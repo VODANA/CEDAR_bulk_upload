@@ -12,13 +12,11 @@
 
     <form method="POST" action='{{ route("settings.store") }}' enctype="multipart/form-data">
         @csrf
-
+        <br/>
         <div class="accordion">
             {{ __('CEDAR') }}
         </div>
-
         <div class="panel">
-
             <div class="form-group">
                 <input class="form-control" type="text" name="site_name" placeholder="Site Name">
                 @error('site_name')
@@ -132,3 +130,4 @@
     </form>
 </div>
 @endsection
+

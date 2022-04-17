@@ -49,8 +49,8 @@ class BackupController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * 5);*/
 
             $setting = new Setting;
-            $setting=$setting->getSettings(auth()->id());
-           // dd($setting->backup_path);
+            $setting=$setting->getSetting();
+           // dd($setting);
              if($setting->backup_path)
                  $backup_dir = $setting->backup_path;
              else

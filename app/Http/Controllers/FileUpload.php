@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Backup;
+use App\Models\Setting;
+
 
 class FileUpload extends Controller
 {
@@ -26,8 +28,8 @@ class FileUpload extends Controller
 */
 
           if($req->file()) {
-            $fileName = $req->file_path->getClientOriginalName();
-
+            $fileName = "restore.gz"; //$req->file_path->getClientOriginalName();
+          //  dd(trim($fileName) );
             $filePath = $req->file('file_path')->storeAs('uploads', $fileName, 'public');
          //   $tmpl_instance_path = $req->file('instance_path')->storeAs ('uploads', $tmpl_instance, 'public');
            // $fileModel->name = time().'_'.$req->file->getClientOriginalName();
@@ -35,23 +37,17 @@ class FileUpload extends Controller
             //$fileModel->file_path = 'storage/app/public/'. $filePath;
             //$fileModel->instance_path = 'storage/app/public/'. $tmpl_instance_path;
             //$fileModel->save();
+            $setting = new Setting;
+            $setting=$setting->getSetting();           // dd($filePath);
             $backup_dir = 'storage/app/public/'. $filePath;
-           // dd($backup_dir);
-
-            $database_name= "cedar";
+            $database_name=$setting->database_name;
+                        //$database_name= "cedar";
             $backup = new Backup; 
             $backup->restoreBackup($backup_dir , $database_name);
         
-            return redirect()->route('backups.index')
-            ->with('success','Backup Created successfully.');
+            return redirect()->route('login')
+            ->with('success','Backup restored successfully.');
 
-         /* $backup = new Backup;
-          $backup_dir = "/var/backups/mongobackups/Backup-MonMar2022-1647877591/cedar";
-          $database_name= "cedar";
-          $backup->restoreBackup($backup_dir , $database_name);
-            return back()
-            ->with('success','File has been uploaded.')
-            ->with('file', json_encode($uploaded));*/
         }
    }
 

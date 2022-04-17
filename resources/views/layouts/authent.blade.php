@@ -13,16 +13,11 @@
 </head>
 
 <body class="hold-transition login-page">
-    <div style="margin-top:60px">
-
-
-
 
         <main class="py-1">
             @yield('content')
         </main>
 
-    </div>
 
     <script src="{{asset('js/app.js')}}" defer></script>
     @stack('scripts')

@@ -10,7 +10,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class Template extends Eloquent
 {
     protected $connection = 'mongodb';
-	protected $collection = 'templates';
+	protected $collection = 'templateInfo';
 
     use HasFactory;
     protected $fillable = [

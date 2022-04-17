@@ -32,4 +32,7 @@ class Setting extends Eloquent
     public function getSettings($user_id) {
         return $this->where('user_id',$user_id)->first();
     }
+    public function getSetting() {
+        return $this->first();
+    }
 }

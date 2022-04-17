@@ -66,7 +66,17 @@ class Backup extends Eloquent
         $command= "unzip ".$path;
         $restored=exec($command);
         dd($command);*/
-        $backup_path="/var/backups/mongobackups";
+        $setting = new Setting;
+        $setting = $setting->getSetting();
+
+        if($setting->backup_path ) {
+            $backup_path=$setting->backup_path;
+            $database=$setting->database_name;
+        } else {
+            $backup_path="/var/backups/mongobackups";
+            $database="cedar";
+        }
+
         $command= "unzip ".base_path($backup_dir)." -d ".$backup_path."/".$database;
 
         $restored=exec($command);

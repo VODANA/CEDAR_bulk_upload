@@ -2,8 +2,12 @@
 @section('title','HOME')
 @section('content')
 <div class="wrapper">
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+                <h3> {{ session('success') }}<h3>
+        </div>
+    @endif
     <div class="card">
-
         <div class="card-body">
             <div class="row">
                 <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
@@ -43,10 +47,13 @@
                         <div class="col-12">
                             <h4>CEDAR</h4>
                             <div class="post">
+                            <h4 class="fas fa-link mr-1"> Templates</h4>
 
-                                <!-- /.user-block -->
+                                <!-- /.user-block --> <br/>
                                 <p>
-                                    CEDAR is ...
+                                    => Total Templates in CEDAR: <span style="color:maroon">
+                                    {{ count( $data['templates']) }} 
+                                </span>
                                 </p>
 
                                 <p>
@@ -57,29 +64,34 @@
                             </div>
 
 
-                            <h4>DHIS2</h4>
+                            <h4 class="fas fa-link mr-1"> Template Instances</h4>
                             <div class="post">
 
                                 <!-- /.user-block -->
-                                <p>
-                                    DHIS is ...
+              <!-- /.user-block -->
+              <p>
+                                    => Total Instances Created ... : <span style="color:maroon">
+                                    {{ count( $data['templateinstance']) }} 
+                                </span>
                                 </p>
+
+                            </div>
+
+                            <h2> Linked Systems</h2>
+                            <div class="post">
+                            <div class="post">
+                            <h4>  Healh Management Information System (HMIS)</h4>
 
                                 <p>
                                     <a href="https://dhis2.org" class="link-black text-sm"><i
                                             class="fas fa-link mr-1"></i>
                                         DHIS2</a>
                                 </p>
-                            </div>
-
-
-                            <h4>Allegrograph</h4>
-                            <div class="post">
+                            </div> <br/>
 
                                 <!-- /.user-block -->
-                                <p>
-                                    Allegrograph is ...
-                                </p>
+                                <h4>  Triple Store</h4>
+
 
                                 <p>
                                     <a href="https://allegrograph.com" class="link-black text-sm"><i
@@ -93,7 +105,7 @@
                 </div>
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <h3 class="text-primary"><i class="fas fa-hospital"></i> Facility</h3>
-                    <p class="text-muted">This facility ...</p>
+                    <p class="text-muted">This facility name: <span style="color:maroon"> {{ $data['setting'][0]['location'] }} </span> </p>
                     <br>
                     <div class="text-muted">
                        <!-- <p class="text-sm">Client Company

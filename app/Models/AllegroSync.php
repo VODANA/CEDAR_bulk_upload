@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class AllegroSync extends Model
+class AllegroSync extends Eloquent
 {
+    protected $connection = 'mongodb';
+    protected $collection = 'allegrosyncInfo';
     use HasFactory;
     protected $fillable = [
         'name',

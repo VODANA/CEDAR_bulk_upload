@@ -49,9 +49,8 @@ class FileUpload extends Controller
             $backup->restoreBackup($restore_file_dir , $database_name);
             $backup->clearAfterUse($restore_file_dir);
         
-            return redirect()->route('login')
+            return redirect()->route('home')
             ->with('success','Backup restored successfully.');
-
         }
    }
 

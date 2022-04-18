@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileUpload;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -22,14 +23,16 @@ Route::get('/', function () {
 Route::get('/home', function(){
   return view('home');
 });
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+
 Auth::routes();
 
 //Backend : Admin Panel
 Route::group([ 'namespace'=> '\App\Http\Controllers\Admin', 'prefix' => 'admin',  'as'=>'admin.', 'middleware' => 'auth' ], function () { 
 
-  Route::get('/', function () {
-    return redirect(route('/home')->name('home'));
-  });
+  //Route::get('/', function () {
+    //return redirect(route('/home'));
+  //});
   
   //naming convention ignored for dashboard as /admin/dashboards sounds inappropriate!
   Route::get('/dashboard', 'DashboardController@index')->name('dashboard'); 

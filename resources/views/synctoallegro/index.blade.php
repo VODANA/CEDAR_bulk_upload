@@ -6,12 +6,14 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('Sync To Allegro Completed!!!') }}</div>
-
                 <div class="card-body">
-                    @if (session('message'))
+                    @if (session('success'))
                     <div class="alert alert-success" role="alert">
-                        {{ session('message') }}
+                    <h3> {{ session('success') }}<h3>
                     </div>
+                    @endif
+                    @if (session('success'))
+                             <h2> Add More RDF ... </h2>
                     @endif
                     <form method="POST" action='{{ route("synctoallegros.store") }}' enctype="multipart/form-data">
                         @csrf

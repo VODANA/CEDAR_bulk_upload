@@ -124,7 +124,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="https://dashboard.vodana.health" class="nav-link">
+                                    <a href="http://dashboard.vodana:8081" class="nav-link">
                                         <i class="far fa-chart-bar nav-icon"></i>
                                         <p>Internal</p>
                                     </a>

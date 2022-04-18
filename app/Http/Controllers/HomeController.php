@@ -21,12 +21,15 @@ class HomeController extends Controller
      */
     public function home()
     {
-      $setting = Setting::all();
-      if(count($setting)==0) {
-         return view('setting.create');
+      $setting = new Setting;
+    //  dd($setting->getSettings(auth()->id()));
+
+       if(!$setting) {
+           return view('setting.create');
        } else {  
           $templates = Template::all();
           $templateinstance = DHISSync::all();     
+          $setting = Setting::all();     
           $data['templates'] = $templates;
           $data['setting'] = $setting;
           $data['templateinstance'] = $templateinstance;

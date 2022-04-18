@@ -183,7 +183,11 @@ class SyncToAllegro extends Eloquent
     public function postToAllegro($repository , $input){
         $setting = new Setting;
         $setting = $setting->getSettings(auth()->id());
-        $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
+      //  $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
+        $secureurl=$setting->allegro_url."/#repositories".$repository; //"/statements";
+     //  $secureurl="http://localhost:10035/repositories/Covid/statements";
+     //   $secureurl="http://localhost:10035/#/repositories/Covid";
+   //   dd($setting->allegro_username);
         $content_type='text/plain';
         // dd(base64_decode($setting->allegro_password));
         //   $api_key='BLPdhZ90uMf8q4';

@@ -67,7 +67,7 @@ class Backup extends Eloquent
         $restored=exec($command);
         dd($command);*/
         $setting = new Setting;
-        $setting = $setting->getSetting();
+        $setting = $setting->getSettings(auth()->id());
 
         if($setting->backup_path ) {
             $backup_path=$setting->backup_path;

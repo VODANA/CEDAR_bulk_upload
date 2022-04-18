@@ -37,7 +37,8 @@ class AllegroSync extends Eloquent
         return $inputData;
     }
 
-    public function bulkSync($source_file , $secureurl , $apiKey , $vocabularyUrl, $templateJson){
+    public function bulkSync($source_file , $secureurl , $apiKey , $repository, $templateJson){
+       //  dd($vocabularyUrl);
          $inputData=$this->readCSVFile($source_file);
          // delete $templateJson["@id"];
          $templateArray = json_decode($templateJson, true);
@@ -46,30 +47,33 @@ class AllegroSync extends Eloquent
          $rdf="";
          foreach($inputData as $data ) {
              foreach($data as $field => $value ) {
-                if(array_key_exists('@value', $templateArray[$field])){
+                if(array_key_exists($field, $templateArray) && array_key_exists('@value', $templateArray[$field])){
                     $templateArray[$field]['@value']=$value;         
-                } elseif(array_key_exists('@id', $templateArray[$field])){
-                    $templateArray[$field]['@id']=$vocabularyUrl.trim($value);
+                } elseif( array_key_exists($field, $templateArray) && array_key_exists('@id', $templateArray[$field])){
+                    $templateArray[$field]['@id']=$this->getVocabularyURL($templateArray[$field]['@id'], trim($value));
                     $templateArray[$field]['rdfs:label']=$value;
                 }
-                $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$field],$value);
-                $rdf=$rdf." ".$rdf_new;
-                 //$templateArray['schema:name']=$data['PatientID'];
-                 //$templateArray['schema:description']=$_POST["field_properties"];
-             }
-             
-             $rdf_context=$this->getRDFContextVars($template_id,$templateArray,$value);
-             $rdf=$rdf_context." ".$rdf;
-           //  dd($rdf);
+                if(array_key_exists($field, $templateArray)) {
+                    $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$field],$value);
+                    $rdf=$rdf." ".$rdf_new;
+                }
 
              $input = json_encode($templateArray);  
              
              $this->postData($secureurl , $apiKey , $input);
-             $this->postToAllegro($secureurl , $apiKey , $rdf);
+             $this->postToAllegro($secureurl , $apiKey , $rdf, $repository);
              
         // return $input;
          }
+        }
     }
+    public function getVocabularyURL($url,$label){
+        $exploded=explode('/',$url);
+        $last_index=substr_count($url,'/');
+        $exploded[$last_index]=$label;
+        $vocabularyUrl=implode('/',$exploded);
+    return $vocabularyUrl;
+}
     public function getRDFContextVars($template_id, $templateArray, $field_value) {
          
             $context_var="";
@@ -106,12 +110,14 @@ class AllegroSync extends Eloquent
         curl_close($curl);
       return $uploaded;
     }
-    public function postToAllegro($secureurl , $apiKey , $input){
+    public function postToAllegro($secureurl , $apiKey , $input, $repository){
         $setting = new Setting;
         $setting = $setting->getSettings(auth()->id());
         $content_type='text/plain';
-    
-        $secureurl="http://localhost:10035/repositories/Covid/statements";
+        $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
+      //  dd($secureurl);
+
+        //$secureurl="http://localhost:10035/repositories/Covid/statements";
         $content_type='text/plain';
         $api_key='BLPdhZ90uMf8q4';
         $ch = curl_init();

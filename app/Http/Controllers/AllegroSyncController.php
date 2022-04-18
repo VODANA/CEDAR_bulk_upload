@@ -54,6 +54,7 @@ class AllegroSyncController extends Controller
          
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
+           // dd(auth()->id());
             $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2F".$allegrosync->folder_id; //Folder Id
             //Read template instance
             $templateJson = file_get_contents(base_path($allegrosync->instance_path));

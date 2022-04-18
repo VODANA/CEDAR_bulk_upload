@@ -50,8 +50,15 @@ class BackupController extends Controller
 
             $setting = new Setting;
             $setting=$setting->getSettings(auth()->id());
-           // dd($setting);
-             if($setting->backup_path)
+            if(!$setting) {
+                $notification = array(
+                  'message' => "Please adjust the backup path first!",
+                  'alert-type' => 'error'
+                );
+              return view('setting.create');
+            }
+  
+            if($setting->backup_path)
                  $backup_dir = $setting->backup_path;
              else
                  $backup_dir = "/var/backups/mongobackups";

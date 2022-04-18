@@ -47,7 +47,7 @@
                         <div class="col-12">
                             <h4>CEDAR</h4>
                             <div class="post">
-                            <h4 class="fas fa-link mr-1"> Templates</h4>
+                            <h4 class="fas fa-file mr-1"> Templates</h4>
 
                                 <!-- /.user-block --> <br/>
                                 <p>
@@ -58,15 +58,15 @@
                                 </span>
                                 </p>
 
-                                <p>
+                                <!--<p>
                                     <a href="https://cedar.metadatacenter.org" class="link-black text-sm"><i
                                             class="fas fa-link mr-1"></i>
                                         CEDAR</a>
-                                </p>
+                                </p>-->
                             </div>
 
 
-                            <h4 class="fas fa-link mr-1"> Template Instances</h4>
+                            <h4 class="fas fa-file-code mr-1"> Template Instances</h4>
                             <div class="post">
 
                                 <!-- /.user-block -->
@@ -80,28 +80,52 @@
                                 </p>
 
                             </div>
-
-                            <h2> Linked Systems</h2>
                             <div class="post">
-                            <div class="post">
-                            <h4>  Healh Management Information System (HMIS)</h4>
+                                <h2> Linked Systems</h2>
 
-                                <p>
-                                    <a href="https://dhis2.org" class="link-black text-sm"><i
-                                            class="fas fa-link mr-1"></i>
-                                        DHIS2</a>
-                                </p>
-                            </div> <br/>
-
-                                <!-- /.user-block -->
-                                <h4>  Triple Store</h4>
+                                <div class="card">
+                                    <div class="card-head">
+                                        <h4> Healh Management Information System (HMIS)</h4>
+                                    </div>
+                                    <div class="card-body">
 
 
-                                <p>
-                                    <a href="https://allegrograph.com" class="link-black text-sm"><i
-                                            class="fas fa-link mr-1"></i>
-                                        Allegrograph</a>
-                                </p>
+                                        <div class="post">
+
+                                            <img src="{{asset('imgs/dhis2-logo-rgb-positive.svg')}}" alt="allegro"
+                                                width="150px">
+
+
+
+                                            <p>
+                                                <a href="https://dhis2.org" class="link-black text-sm"><i
+                                                        class="fas fa-link mr-1"></i>
+                                                    DHIS2</a>
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-head">
+                                    <h4> Triple Store</h4>
+                                </div>
+                                <div class="card-body">
+                                    <!-- /.user-block -->
+                                    <div class="post">
+
+                                        <img src="{{asset('imgs/logo.webp')}}" alt="allegro" width="150px">
+
+
+                                        <p>
+                                            <a href="https://allegrograph.com" class="link-black text-sm"><i
+                                                    class="fas fa-link mr-1"></i>
+                                                Allegrograph</a>
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -109,9 +133,9 @@
                 </div>
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <h3 class="text-primary"><i class="fas fa-hospital"></i> Facility</h3>
-                    <p class="text-muted">This facility name: <span style="color:maroon"> 
+                    <p class="text-muted">Location facility name: <span style="color:maroon"> 
                     @if ($data['setting'])
-                        {{ $data['setting'][0]['location'] }}
+                    {{ $data['setting'][0]['location'] }}
                     @endif
                  </span> </p>
                     <br>

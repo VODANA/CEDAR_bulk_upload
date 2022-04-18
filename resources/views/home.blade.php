@@ -52,7 +52,9 @@
                                 <!-- /.user-block --> <br/>
                                 <p>
                                     => Total Templates in CEDAR: <span style="color:maroon">
-                                    {{ count( $data['templates']) }} 
+                                    @if ($data['templates'])
+                                        {{ count( $data['templates']) }} 
+                                    @endif
                                 </span>
                                 </p>
 
@@ -71,7 +73,9 @@
               <!-- /.user-block -->
               <p>
                                     => Total Instances Created ... : <span style="color:maroon">
-                                    {{ count( $data['templateinstance']) }} 
+                                    @if ($data['templateinstance'])
+                                        {{ count( $data['templateinstance']) }} 
+                                    @endif
                                 </span>
                                 </p>
 
@@ -105,7 +109,11 @@
                 </div>
                 <div class="col-12 col-md-12 col-lg-4 order-1 order-md-2">
                     <h3 class="text-primary"><i class="fas fa-hospital"></i> Facility</h3>
-                    <p class="text-muted">This facility name: <span style="color:maroon"> {{ $data['setting'][0]['location'] }} </span> </p>
+                    <p class="text-muted">This facility name: <span style="color:maroon"> 
+                    @if ($data['setting'])
+                        {{ $data['setting'][0]['location'] }}
+                    @endif
+                 </span> </p>
                     <br>
                     <div class="text-muted">
                        <!-- <p class="text-sm">Client Company

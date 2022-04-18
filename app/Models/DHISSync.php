@@ -71,7 +71,8 @@ class DHISSync extends Eloquent
 
       foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
             $dataelement->value=$this->getIndicatorValue($dataelement->basedOn,$dataelement->cutPoint,$dataelement->comparison,$dataelement->filterVar,$dataelement->filterLogic,$dataelement->filterCutPoint,$dataelement->min,$dataelement->max,$dataelement->filterDate);
-            $dataelement->period=date("Y").date("m")-1;
+            $month=date("m")-01;
+            $dataelement->period=date("Y").$month;
             $curl = curl_init();
             curl_setopt_array($curl, array(
             CURLOPT_URL => $setting->hmis_url.'/api/dataValues?de='.$dataelement->dataElement.'&pe='.$dataelement->period.'&ou='.$dataelement->orgUnit.'&co='.$dataelement->categoryOptionCombo.'&value='.$dataelement->value,
@@ -131,7 +132,7 @@ public function syncDHIS_json($dhis_data_elements , $anc, $anc_json){
         $month=12;
       } 
       else
-        $month=$month-00;          ;
+        $month=$month-01;          ;
 
       $dt= $year.'-'.$month.'-'.date("d");
       $start_date=date("Y-m-01 00:00:00", strtotime($dt));
@@ -148,7 +149,7 @@ public function syncDHIS_json($dhis_data_elements , $anc, $anc_json){
       $month=12;
     } 
     else
-      $month=$month-00;          ;
+      $month=$month-01;          ;
 
     $dt= $year.'-'.$month.'-'.date("d");
     $last_date=date("Y-m-t", strtotime($dt));

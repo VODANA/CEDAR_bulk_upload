@@ -21,12 +21,16 @@ class HomeController extends Controller
      */
     public function home()
     {
-      $templates = Template::all();
       $setting = Setting::all();
-      $templateinstance = DHISSync::all();
-      $data['templates'] = $templates;
-      $data['setting'] = $setting;
-      $data['templateinstance'] = $templateinstance;
+      if(count($setting)==0) {
+         return view('setting.create');
+       } else {  
+          $templates = Template::all();
+          $templateinstance = DHISSync::all();     
+          $data['templates'] = $templates;
+          $data['setting'] = $setting;
+          $data['templateinstance'] = $templateinstance;
+      }
       /*/   dd($synctoallegros);
         $setting = new Setting;
         $setting=$setting->getSettings(auth()->id());

@@ -24,24 +24,24 @@ class DHISSync extends Eloquent
       if(!$min && !$filterVar)
           return DHISSync::whereRaw([$var => [$compare => $varValue]])
               ->where(['schema:name' => ['$regex' => 'Antenatal']])
-              ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
+            //  ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
               ->count();
       elseif(!$min && $filterVar)
           return DHISSync::whereRaw([$var => [$compare => $varValue]])
               ->where($filterVar, $filterCriteria, $filterValue )
               ->where(['schema:name' => ['$regex' => 'Antenatal']])
-              ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
+            //  ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
               ->count();//->where('pav:createdOn', ">=", $report_month)->count();
       elseif($min && $filterVar)
           return DHISSync::whereRaw([$var => ['$gt' => $min, '$lt' => $max]])
               ->where($filterVar, $filterCriteria, $filterValue)
               ->where(['schema:name' => ['$regex' => 'Antenatal']])
-              ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
+            //  ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
               ->count();
       elseif($min && !$filterVar)
           return DHISSync::whereRaw([$var => ['$gt' => $min, '$lt' => $max]])
               ->where(['schema:name' => ['$regex' => 'Antenatal']])
-              ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
+            //  ->where([$filterDate => ['$gte' => $this->getStartDateOfLastMonth(), '$lte' => $this->getEndDateOfLastMonth()]])
               ->count();
       else
           return DHISSync::all()->count();
@@ -72,7 +72,10 @@ class DHISSync extends Eloquent
       foreach($dhis_data_elements->dataValues as $key=>$dataelement) {
             $dataelement->value=$this->getIndicatorValue($dataelement->basedOn,$dataelement->cutPoint,$dataelement->comparison,$dataelement->filterVar,$dataelement->filterLogic,$dataelement->filterCutPoint,$dataelement->min,$dataelement->max,$dataelement->filterDate);
             $month=date("m")-01;
-            $dataelement->period=date("Y").$month;
+            if($month<10)
+                $month="0".$month;
+          //  dd(date("Y").$month);
+            $dataelement->period=date("Y").$month; 
             $curl = curl_init();
             curl_setopt_array($curl, array(
             CURLOPT_URL => $setting->hmis_url.'/api/dataValues?de='.$dataelement->dataElement.'&pe='.$dataelement->period.'&ou='.$dataelement->orgUnit.'&co='.$dataelement->categoryOptionCombo.'&value='.$dataelement->value,

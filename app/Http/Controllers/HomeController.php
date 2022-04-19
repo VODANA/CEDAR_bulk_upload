@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\TemplateInstance;
 use App\Models\SyncToAllegro;
 use Illuminate\Http\Request;
 use App\Models\Setting;
@@ -116,7 +117,7 @@ class HomeController extends Controller
       //  dd(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
         $apiKey = $setting->api_key; 
-        $b = new SyncToAllegro;
+        $b = new TemplateInstance;
      //   dd($setting->hmis_url);
         $templateJson=$b->getTemplateInstances($request->template_name);
       //  dd($request->repository);

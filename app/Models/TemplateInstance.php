@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
 
-class Template extends Eloquent
+class TemplateInstance extends Eloquent
 {
     protected $connection = 'mongodb';
-	protected $collection = 'templates';
+	protected $collection = 'template-instances';
 
     use HasFactory;
     protected $fillable = [
@@ -55,5 +55,10 @@ class Template extends Eloquent
                 $dataElements[$value->dataElement] = $value->dataElementDescription;
         }
         return $dataElements;
+    }
+
+    public function getTemplateInstances($title){
+        //return Template::where('schema:name', '%like%', $title )->get();
+        return SyncToAllegro::whereRaw(['schema:name' => ['$regex' => $title]])->get();
     }
 }

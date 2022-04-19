@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\TemplateInstance;
 use App\Models\SyncToAllegro;
 use Illuminate\Http\Request;
 use App\Models\Setting;
@@ -30,7 +31,7 @@ class SyncCEDARToAllegroController extends Controller
         // $templateJson=$synctoallegros[0];
        // $templates =  new Template;
        // $templateJson=$templates->getTemplate("Anten");
-        $b = new SyncToAllegro;
+        $b = new TemplateInstance;
         $templateJson=$b->getTemplateInstances("CO");
        // dd($templateJson);
         $b->bulkSync($templateJson);
@@ -103,14 +104,15 @@ class SyncCEDARToAllegroController extends Controller
       //  dd(auth()->id());
         $secureurl ="https://resource.".$setting->url."/template-instances?folder_id=https%3A%2F%2Frepo.".$setting->url."%2Ffolders%2Fallegrosyncfolderid"; //Folder Id
         $apiKey = $setting->api_key; 
-        $b = new SyncToAllegro;
-     //   dd($setting->hmis_url);
-        $templateJson=$b->getTemplateInstances($request->template_name);
-      //  dd($request->repository);
+        $instances = new TemplateInstance;
+        $sync = new SyncToAllegro;
+       // dd($request->repository);
+        $templateJson=$instances->getTemplateInstances($request->template_name);
+      //  dd($templateJson);
        // $b->bulkSync($templateJson);
 
         for($k=0; $k < count($templateJson); $k++) {
-            $b->bulkSync($templateJson[$k] , $request->repository);
+            $sync->bulkSync($templateJson[$k] , $request->repository);
         }
           return redirect()->route('synccedartoallegros.index')
                           ->with('success','Instamces synced to AllegroGraph successfully.');

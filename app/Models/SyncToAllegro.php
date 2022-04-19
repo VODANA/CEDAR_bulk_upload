@@ -10,7 +10,9 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 class SyncToAllegro extends Eloquent
 {
 	protected $connection = 'mongodb';
-	protected $collection = 'template-instances';
+//	protected $collection = 'dhis';
+    protected $collection = 'template-instances';
+
     protected $fillable = [
         'rdf',
         /*"Health_Facility_name", 
@@ -186,7 +188,7 @@ class SyncToAllegro extends Eloquent
   //      $secureurl=$setting->allegro_url.'/'.'repositories'.'/'.$repository."/statements";
         $secureurl=$setting->allegro_url."/repositories/".$repository."/statements";
         //   $secureurl="http://localhost:10035/#/repositories/Covid";
-   //   dd($secureurl);
+     //   dd($secureurl);
         $content_type='text/plain';
         // dd(base64_decode($setting->allegro_password));
         //   $api_key='BLPdhZ90uMf8q4';

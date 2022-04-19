@@ -108,7 +108,13 @@
                         <img src="{{ asset('Getu_.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>--}}
                     <div class="info" style="margin-left:50px">
-                        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                        <a href="#" class="d-block">
+                        @if ( Auth::user())
+                             <a class="d-block mb-2"
+                                        href='{{ route("admin.users.edit", auth()->id()) }}'>
+                        {{ Auth::user()->name }}
+                        </a>
+                        @endif
                     </div>
                 </div>
                 <nav class="mt-4">

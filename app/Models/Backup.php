@@ -20,8 +20,10 @@ class Backup extends Eloquent
     ];
 
     public function createBackup($backup_dir='', $database='') {
-      //  dd($backup_dir);
         $backup_path=$backup_dir."/".date('dMY');
+        //$mkdirc = "mkdir ".$backup_path."/cedar";
+       // dd($mkdirc);
+
         $command = "mongodump --db ".$database." --gzip -o ".$backup_path;
        // $command = "mongodump --db ".$database." --out ".$backup_dir."/Backup-".date('dMY');    
        // dd($command);

@@ -25,7 +25,7 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="text" name="vocabulary_url" placeholder="Repository URL">
+                            <input class="form-control" type="text" name="vocabulary_url" placeholder="Repository e.g Covid">
                             @error('vocabulary_url')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror

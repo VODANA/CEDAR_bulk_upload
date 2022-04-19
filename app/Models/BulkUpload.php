@@ -47,8 +47,9 @@ class BulkUpload extends Eloquent
             unset($templateArray["@id"]);
          } else
             $template_id="";
-            $rdf="";
+            
          foreach($inputData as $data ) {
+          //   $rdf="";
              foreach($data as $field => $value ) {
                 if(array_key_exists($field, $templateArray) && array_key_exists('@value', $templateArray[$field])){
                     $templateArray[$field]['@value']=$value;         
@@ -57,23 +58,23 @@ class BulkUpload extends Eloquent
                     $templateArray[$field]['rdfs:label']=$value;
                 }
                 if(array_key_exists($field, $templateArray)) {
-                    $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$field],$value);
-                    $rdf=$rdf." ".$rdf_new;
+                //    $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$field],$value);
+                  //  $rdf=$rdf." ".$rdf_new;
                 }
                  //$templateArray['schema:name']=$data['PatientID'];
                  //$templateArray['schema:description']=$_POST["field_properties"];
              }
              
-             $rdf_context=$this->getRDFContextVars($template_id,$templateArray,$value);
-             $rdf=$rdf_context." ".$rdf;
+            // $rdf_context=$this->getRDFContextVars($template_id,$templateArray,$value);
+        //     $rdf=$rdf_context." ".$rdf;
            //  dd($rdf);
 
              $input = json_encode($templateArray);  
              
              $status=$this->postData($secureurl , $apiKey , $input);
-             $this->postToAllegro($secureurl , $apiKey , $rdf);
+           //  $this->postToAllegro($secureurl , $apiKey , $rdf);
           }
-                     return $status;
+        return $status;
     }
     public function getVocabularyURL($url,$label){
             $exploded=explode('/',$url);
@@ -99,6 +100,7 @@ class BulkUpload extends Eloquent
         return '<'.$template_id.'> <'.$field_property.'> "'.$field_value.'" . ';
     }
     public function postData($secureurl , $apiKey , $input){
+       // dd($apiKey);
         $content_type='application/json';
         $ch = curl_init();
         $curl = curl_init();

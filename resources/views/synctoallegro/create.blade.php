@@ -17,9 +17,15 @@
 
                     <form method="POST" action='{{ route("synctoallegros.store") }}' enctype="multipart/form-data">
                         @csrf
-                    <div class="form-group">
+                        <div class="form-group">
                             <textarea class="form-control" name="rdf" placeholder="RDF"></textarea> 
                             @error('rdf')
+                            <label class="text-danger">{{ $message }}</label>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="repository" placeholder="Repository name e.g Covid">
+                            @error('name')
                             <label class="text-danger">{{ $message }}</label>
                             @enderror
                         </div>

@@ -38,14 +38,13 @@ class AllegroSync extends Eloquent
     }
 
     public function bulkSync($source_file , $secureurl , $apiKey , $repository, $templateJson){
-       //  dd($vocabularyUrl);
          $inputData=$this->readCSVFile($source_file);
          // delete $templateJson["@id"];
          $templateArray = json_decode($templateJson, true);
          $template_id=$templateArray["@id"];
          unset($templateArray["@id"]);
-         $rdf="";
          foreach($inputData as $data ) {
+             $rdf="";
              foreach($data as $field => $value ) {
                 if(array_key_exists($field, $templateArray) && array_key_exists('@value', $templateArray[$field])){
                     $templateArray[$field]['@value']=$value;         
@@ -57,17 +56,21 @@ class AllegroSync extends Eloquent
                     $rdf_new=$this->createRDF($template_id,$templateArray['@context'][$field],$value);
                     $rdf=$rdf." ".$rdf_new;
                 }
+             }
+
+             $rdf_context=$this->getRDFContextVars($template_id,$templateArray,$value);
+             $rdf=$rdf_context." ".$rdf;
 
              $input = json_encode($templateArray);  
              
-             $this->postData($secureurl , $apiKey , $input);
+             $status=$this->postData($secureurl , $apiKey , $input);
              $this->postToAllegro($secureurl , $apiKey , $rdf, $repository);
-             
-        // return $input;
-         }
-        }
+
+            }
+            return $status;
     }
-    public function getVocabularyURL($url,$label){
+
+public function getVocabularyURL($url,$label){
         $exploded=explode('/',$url);
         $last_index=substr_count($url,'/');
         $exploded[$last_index]=$label;

@@ -24,7 +24,7 @@
                                 <option value="All">Sync All To AllegrGraph</option>
                                 <option value="Antenatal">Sync Antenatal Care Template</option>
                                 <option value="Out">Sync Out Patient Template</option>
-                                <option value="Covid">Sync Covid Template</option>
+                                <option value="TG">Sync Covid Template</option>
                             </select>
                             @error('template_name')
                             <label class="text-danger">{{ $message }}</label>

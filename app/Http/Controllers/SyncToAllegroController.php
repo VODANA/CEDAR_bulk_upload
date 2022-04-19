@@ -109,7 +109,11 @@ class SyncToAllegroController extends Controller
         $s->rdf=$templateJson;
         $s->save();
        // SyncToAllegro::create( $request->rdf);
-        $repository="Covid";
+        if($request->repository)
+            $repository=$request->repository;
+        else
+            $repository="Covid";
+
         $s->postToAllegro($repository , $request->rdf);
        // $s->createJsonLDInstance($request->all() , $secureurl , $apiKey , $vocabularyUrl='', $templateJson);
 
